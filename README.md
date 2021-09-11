@@ -1,4 +1,4 @@
-#gcad-GL  
+# gcad-GL
 - is a hi-level library connecting CAD-applications with OpenGL
 - written in C, under Gpl3 license.
 - create objects by calling C-functions
@@ -7,8 +7,8 @@
 > grafic-attributes (color or line thickness or line-stipple)  
 > and operational-attributes (normal or hilited or dimmed);
 
-<br>
-####OBJECTS:  
+
+#### OBJECTS:  
  - points,polygons  
  - surface-triangles  triangles, fan, stripe  
  - surface-indexed    indexed triangles, normals  
@@ -17,10 +17,10 @@
 always normal to eyevector, rotated  
  - symbols-3D         eg vectors, arrow(head)s, axis, ..
 
-<br>
-####ATTRIBUTES:
 
-persistance-attribute:
+#### ATTRIBUTES:  
+
+###### persistance-attribute:
 
 - permanent  - objects have DL-record
 - dynamic    - have no DL-record, unlimited nr,  
@@ -28,8 +28,8 @@ persistance-attribute:
 - temporary  - have no DL-record, limited nr,
 	can be created, remove individually
 
-<br>
-grafic-attributes:
+
+###### grafic-attributes:
 
 - surfaces: ColRGB - color,texture,transparency;  
 	style (shaded | symbolic)
@@ -39,16 +39,16 @@ grafic-attributes:
 > can be modified for individual objects,  
 > next redraw updates this objects
 
-<br>
-operational-attributes (only for permanent-objects):
+
+###### operational-attributes (only for permanent-objects):
 
   - normal | hilite | dimmed | hidden  
   - operational-attributes are stored in the DL
   - can be modified for individual objects,  
   	next redraw updates this objects
 
-<br>
-####Modules of gcad-GL:
+
+#### Modules of gcad-GL:
 ~~~
   GUI    user interface independent from drivers (Gtk, OpenGL)
          callbacks from mouse, keys, ..
@@ -60,8 +60,8 @@ operational-attributes (only for permanent-objects):
   DL     DisplayList (control of grafical attributes)
 ~~~
 
-<br>
-####SHADERS:
+
+#### SHADERS:
 - shadSUn  vertices  
            triangles (triangles, triangle-loops, triangle-fans)
 
@@ -83,8 +83,8 @@ operational-attributes (only for permanent-objects):
 - shadSY3  vertices (3D WCS)  
            3D-symbols (text, plane, axis, arrow[head], ..)
 
-<br>
-####EXAMPLE:
+
+#### EXAMPLE:
 ~~~
 	int GUI_CB_win_is_up () {
 	  // window has started; display a triangle
@@ -107,8 +107,8 @@ operational-attributes (only for permanent-objects):
 ~~~
 Full code see tst_prim1.c
 
-<br>
-####Build:
+
+#### Build:
 Prerequisites:  
 gcc with tools (ctags)  
 
@@ -121,8 +121,8 @@ sudo yum install gtk3-devel mesa-libGL-devel
 make && ./a.out  
 For using see Help-file using.txt and console-output  
 
-<br>
-####TODO: (not yet implemented, help wanted)
+
+#### TODO: (not yet implemented, help wanted)
 - perspectivic projection
 - shaded_faces - geometry-shader ?  
     get angle normal-eyeVector = shading-factor
@@ -131,7 +131,7 @@ For using see Help-file using.txt and console-output
 - line-stipple (dashed, dashed-long, dash-dot)
 - tesselate with shader (may not modify boundary - to be tested)
 - make shared overlay (libgcad-GL-gtk3-gl3.so)
-####Already working:
+#### Already working:
 - orthographic projection with zoom, pan, rotate
 - create points, curves, triangles, 2D-buttons
 - change colors, width of curves, points
@@ -139,10 +139,10 @@ For using see Help-file using.txt and console-output
 
 
 
-<br>
+
 Report bugs, improvements to support at gcad3d.org
 
-<br>
+
 2021-09-10   First release.
 
 
