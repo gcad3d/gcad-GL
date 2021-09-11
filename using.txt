@@ -1,0 +1,33 @@
+=================== Functions driver:                                  2021-09-09
+- press key shift and move cursor to move objects
+- press key Strg and move cursor horiz. to rotate objects
+- press key Strg and move cursor vertically to tilt objects
+- use mousewheel to zoom objects
+
+// - or press keys shift and Strg and move cursor to zoom objects      TODO
+// - key 't' to set topView                                            TODO
+// - key 'f' to set frontView                                          TODO
+// - key 's' to set sideView                                           TODO
+ 
+
+
+=================== Functions app:
+- key '1' or '2' or '0' - select new rotation-centerpoint
+
+
+  Create-objects:
+- key 'p' or button "Point" to add point
+- key 'l' or button "Curve" to add polygon-curve
+- key 't' or button "Surface" to add triangle-surface
+ 
+
+  Attributes:
+- key 'c' or button "change-Color" to change color for following objects
+- key 'h' to hide or reDisplay obj (last -1)
+- key 'w' to increase width of point, curve for following objects
+
+- key 'd' to dump internal data
+- key 'Esc' to exit.
+
+
+EOF

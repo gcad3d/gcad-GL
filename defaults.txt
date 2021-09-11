@@ -1,0 +1,2 @@
+1.0             // scale for fontsize (if xdpyinfo | awk '/dimensions/' fails)
+# EOF
