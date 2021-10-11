@@ -1,0 +1,18 @@
+#!/bin/sh
+# help usage                        ./do h 
+
+
+if test "$1" = "help"; then
+echo "---------------------------------------------------------------------"
+echo "./do fnd_inc <incFile>  # find & touch all files with #include <incFilNam>"
+echo "---------------------------------------------------------------------"
+exit 0
+fi
+
+# find & touch all files with #include <incFilNam>". cscope must be installed.
+if test "$1" = "fnd_inc"; then
+  ../app/fnd_inc.sh $2
+  exit $?
+fi
+
+# EOF

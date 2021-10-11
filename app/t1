@@ -1,0 +1,530 @@
+Linux HDEV4 4.15.0-156-generic #163-Ubuntu SMP Thu Aug 19 23:31:58 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Linux version 4.15.0-156-generic (buildd@lcy01-amd64-008) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #163-Ubuntu SMP Thu Aug 19 23:31:58 UTC 2021
+
+
+========================= gcad-GL V0.0.1 
+AP_defaults_read |defaults.txt|
+ GR_vf1SizScl=|1.000000|
+GR_init0 
+DL_init__ -------- 24000
+DL_init__ -------- 56000
+GUI_init 
+GNU_LIBC_VERSION = |glibc 2.27|
+GTK_MAJOR_VERSION=3 GTK_MINOR_VERSION=22
+ s1-3=|    3840x2160 pixels (702x392 millimeters)
+|
+OS_get_scrRes 3840 2160 702 392
+ex-Gtk_get_fontSiz 13 33
+
+
+=================== Gtk_CB_realize 
+ - exit mit key Esc
+ - ----------------
+GR_resize 
+ resize-mm_px 5.470085 5.510204
+ resize-sizWin-mm 146.250000 145.185185
+ resize_mm_mcs=0.013675 GR_sizY_mm_ndc=0.013776
+GL_view_update angZ=0.000000 angX=0.000000 Scale=0.000000
+   GR_cenRot = 0.000000 0.000000 0.000000
+M44FC_dump_mx4x4 ex-GL_view_update-GR_matf_dev
+  M44VX=    0.000,    0.000,    0.000,    0.000
+     VY=    0.000,    0.000,    0.000,    0.000
+     VZ=    0.000,    0.000,    0.000,    0.000
+     PO=    0.000,    0.000,    0.000,    1.000
+ ex-GR_resizef
+Renderer: GeForce GTX 1050 Ti/PCIe/SSE2
+OpenGL version supported 3.2.0 NVIDIA 460.91.03
+GSLS version 1.50 NVIDIA via Cg compiler
+====================================== 
+
+GL_shadSUn_init -----------
+GL_shad_create 35633
+GL_shad_create 35632
+ program=3 ulMvp=0 ulAtt = 1
+ shadSUn_init idPrg=3 vao=1 vbo=1
+ ex-GL_shadSUn_init irc=0 3
+GL_shadCV_init -----------
+GL_shad_create 35633
+GL_shad_create 35632
+ program=4 ulMvp=1 ulAtt = 0
+ shadCV_init idPrg=4 vao=2 vbo=2
+ ex-GL_shadCV_init irc=0 4
+GL_shSY2_init -----------
+GL_shad_create 35633
+GL_shad_create 35632
+ shSY2_init idPrg=5 ulMvp=1 ulAtt=0 ulOff=2
+ shSY2_init idPrg=5 vao=3 vbo=3
+ GL_vf1_CW=20.030001 GL_vf1_CH=20.070000
+GL_load_font1 0 0
+GL_shSY2_add_sym *iSym=1 bNr=120 iOff=0 oNr=5
+GL_shSY2_add_sym *iSym=2 bNr=144 iOff=120 oNr=6
+GL_shSY2_add_sym *iSym=3 bNr=96 iOff=264 oNr=4
+GL_shSY2_add_sym *iSym=4 bNr=312 iOff=360 oNr=13
+GL_shSY2_add_sym *iSym=5 bNr=408 iOff=672 oNr=17
+GL_shSY2_add_sym *iSym=6 bNr=288 iOff=1080 oNr=12
+GL_shSY2_add_sym *iSym=7 bNr=72 iOff=1368 oNr=3
+GL_shSY2_add_sym *iSym=8 bNr=120 iOff=1440 oNr=5
+GL_shSY2_add_sym *iSym=9 bNr=120 iOff=1560 oNr=5
+GL_shSY2_add_sym *iSym=10 bNr=72 iOff=1680 oNr=3
+GL_shSY2_add_sym *iSym=11 bNr=48 iOff=1752 oNr=2
+GL_shSY2_add_sym *iSym=12 bNr=72 iOff=1800 oNr=3
+GL_shSY2_add_sym *iSym=13 bNr=24 iOff=1872 oNr=1
+GL_shSY2_add_sym *iSym=14 bNr=96 iOff=1896 oNr=4
+GL_shSY2_add_sym *iSym=15 bNr=24 iOff=1992 oNr=1
+GL_shSY2_add_sym *iSym=16 bNr=192 iOff=2016 oNr=8
+GL_shSY2_add_sym *iSym=17 bNr=72 iOff=2208 oNr=3
+GL_shSY2_add_sym *iSym=18 bNr=168 iOff=2280 oNr=7
+GL_shSY2_add_sym *iSym=19 bNr=216 iOff=2448 oNr=9
+GL_shSY2_add_sym *iSym=20 bNr=120 iOff=2664 oNr=5
+GL_shSY2_add_sym *iSym=21 bNr=216 iOff=2784 oNr=9
+GL_shSY2_add_sym *iSym=22 bNr=240 iOff=3000 oNr=10
+GL_shSY2_add_sym *iSym=23 bNr=72 iOff=3240 oNr=3
+GL_shSY2_add_sym *iSym=24 bNr=360 iOff=3312 oNr=15
+GL_shSY2_add_sym *iSym=25 bNr=240 iOff=3672 oNr=10
+GL_shSY2_add_sym *iSym=26 bNr=192 iOff=3912 oNr=8
+GL_shSY2_add_sym *iSym=27 bNr=216 iOff=4104 oNr=9
+GL_shSY2_add_sym *iSym=28 bNr=48 iOff=4320 oNr=2
+GL_shSY2_add_sym *iSym=29 bNr=48 iOff=4368 oNr=2
+GL_shSY2_add_sym *iSym=30 bNr=48 iOff=4416 oNr=2
+GL_shSY2_add_sym *iSym=31 bNr=240 iOff=4464 oNr=10
+GL_shSY2_add_sym *iSym=32 bNr=432 iOff=4704 oNr=18
+GL_shSY2_add_sym *iSym=33 bNr=96 iOff=5136 oNr=4
+GL_shSY2_add_sym *iSym=34 bNr=240 iOff=5232 oNr=10
+GL_shSY2_add_sym *iSym=35 bNr=168 iOff=5472 oNr=7
+GL_shSY2_add_sym *iSym=36 bNr=144 iOff=5640 oNr=6
+GL_shSY2_add_sym *iSym=37 bNr=96 iOff=5784 oNr=4
+GL_shSY2_add_sym *iSym=38 bNr=72 iOff=5880 oNr=3
+GL_shSY2_add_sym *iSym=39 bNr=216 iOff=5952 oNr=9
+GL_shSY2_add_sym *iSym=40 bNr=72 iOff=6168 oNr=3
+GL_shSY2_add_sym *iSym=41 bNr=72 iOff=6240 oNr=3
+GL_shSY2_add_sym *iSym=42 bNr=96 iOff=6312 oNr=4
+GL_shSY2_add_sym *iSym=43 bNr=72 iOff=6408 oNr=3
+GL_shSY2_add_sym *iSym=44 bNr=48 iOff=6480 oNr=2
+GL_shSY2_add_sym *iSym=45 bNr=96 iOff=6528 oNr=4
+GL_shSY2_add_sym *iSym=46 bNr=72 iOff=6624 oNr=3
+GL_shSY2_add_sym *iSym=47 bNr=192 iOff=6696 oNr=8
+GL_shSY2_add_sym *iSym=48 bNr=144 iOff=6888 oNr=6
+GL_shSY2_add_sym *iSym=49 bNr=216 iOff=7032 oNr=9
+GL_shSY2_add_sym *iSym=50 bNr=168 iOff=7248 oNr=7
+GL_shSY2_add_sym *iSym=51 bNr=264 iOff=7416 oNr=11
+GL_shSY2_add_sym *iSym=52 bNr=48 iOff=7680 oNr=2
+GL_shSY2_add_sym *iSym=53 bNr=120 iOff=7728 oNr=5
+GL_shSY2_add_sym *iSym=54 bNr=48 iOff=7848 oNr=2
+GL_shSY2_add_sym *iSym=55 bNr=96 iOff=7896 oNr=4
+GL_shSY2_add_s=================== Functions driver:                                  2021-09-09
+- press key shift and move cursor to move objects
+- press key Strg and move cursor horiz. to rotate objects
+- press key Strg and move cursor vertically to tilt objects
+- use mousewheel to zoom objects
+
+// - or press keys shift and Strg and move cursor to zoom objects      TODO
+// - key 't' to set topView                                            TODO
+// - key 'f' to set frontView                                          TODO
+// - key 's' to set sideView                                           TODO
+ 
+
+
+=================== Functions app:
+- key '1' or '2' or '0' - select new rotation-centerpoint
+
+
+  Create-objects:
+- key 'p' or button "Point" to add point
+- key 'l' or button "Curve" to add polygon-curve
+- key 't' or button "Surface" to add triangle-surface
+ 
+
+  Attributes:
+- key 'c' or button "change-Color" to change color for following objects
+- key 'h' to hide or reDisplay obj (last -1)
+- key 'w' to increase width of point, curve for following objects
+
+- key 'd' to dump internal data
+- key 'Esc' to exit.
+
+
+EOF
+ym *iSym=56 bNr=48 iOff=7992 oNr=2
+GL_shSY2_add_sym *iSym=57 bNr=72 iOff=8040 oNr=3
+GL_shSY2_add_sym *iSym=58 bNr=72 iOff=8112 oNr=3
+GL_shSY2_add_sym *iSym=59 bNr=72 iOff=8184 oNr=3
+GL_shSY2_add_sym *iSym=60 bNr=24 iOff=8256 oNr=1
+GL_shSY2_add_sym *iSym=61 bNr=72 iOff=8280 oNr=3
+GL_shSY2_add_sym *iSym=62 bNr=48 iOff=8352 oNr=2
+GL_shSY2_add_sym *iSym=63 bNr=24 iOff=8400 oNr=1
+GL_shSY2_add_sym *iSym=64 bNr=72 iOff=8424 oNr=3
+GL_shSY2_add_sym *iSym=65 bNr=288 iOff=8496 oNr=12
+GL_shSY2_add_sym *iSym=66 bNr=192 iOff=8784 oNr=8
+GL_shSY2_add_sym *iSym=67 bNr=168 iOff=8976 oNr=7
+GL_shSY2_add_sym *iSym=68 bNr=192 iOff=9144 oNr=8
+GL_shSY2_add_sym *iSym=69 bNr=216 iOff=9336 oNr=9
+GL_shSY2_add_sym *iSym=70 bNr=120 iOff=9552 oNr=5
+GL_shSY2_add_sym *iSym=71 bNr=240 iOff=9672 oNr=10
+GL_shSY2_add_sym *iSym=72 bNr=120 iOff=9912 oNr=5
+GL_shSY2_add_sym *iSym=73 bNr=120 iOff=10032 oNr=5
+GL_shSY2_add_sym *iSym=74 bNr=168 iOff=10152 oNr=7
+GL_shSY2_add_sym *iSym=75 bNr=72 iOff=10320 oNr=3
+GL_shSY2_add_sym *iSym=76 bNr=48 iOff=10392 oNr=2
+GL_shSY2_add_sym *iSym=77 bNr=216 iOff=10440 oNr=9
+GL_shSY2_add_sym *iSym=78 bNr=120 iOff=10656 oNr=5
+GL_shSY2_add_sym *iSym=79 bNr=192 iOff=10776 oNr=8
+GL_shSY2_add_sym *iSym=80 bNr=192 iOff=10968 oNr=8
+GL_shSY2_add_sym *iSym=81 bNr=192 iOff=11160 oNr=8
+GL_shSY2_add_sym *iSym=82 bNr=96 iOff=11352 oNr=4
+GL_shSY2_add_sym *iSym=83 bNr=288 iOff=11448 oNr=12
+GL_shSY2_add_sym *iSym=84 bNr=120 iOff=11736 oNr=5
+GL_shSY2_add_sym *iSym=85 bNr=120 iOff=11856 oNr=5
+GL_shSY2_add_sym *iSym=86 bNr=48 iOff=11976 oNr=2
+GL_shSY2_add_sym *iSym=87 bNr=96 iOff=12024 oNr=4
+GL_shSY2_add_sym *iSym=88 bNr=48 iOff=12120 oNr=2
+GL_shSY2_add_sym *iSym=89 bNr=96 iOff=12168 oNr=4
+GL_shSY2_add_sym *iSym=90 bNr=72 iOff=12264 oNr=3
+GL_shSY2_add_sym *iSym=91 bNr=192 iOff=12336 oNr=8
+GL_shSY2_add_sym *iSym=92 bNr=24 iOff=12528 oNr=1
+GL_shSY2_add_sym *iSym=93 bNr=192 iOff=12552 oNr=8
+GL_shSY2_add_sym *iSym=94 bNr=216 iOff=12744 oNr=9
+GL_shSY2_add_sym *iSym=95 bNr=192 iOff=12960 oNr=8
+GL_shSY2_add_sym *iSym=96 bNr=72 iOff=13152 oNr=3
+ ex-GL_font1_chr_load irc=0 iSym=97 iOff=0
+GL_symbols_load 97 13224
+GL_shSY2_add_sym *iSym=97 bNr=24 iOff=13224 oNr=2
+GL_shSY2_add_sym *iSym=98 bNr=24 iOff=13248 oNr=2
+GL_shSY2_add_sym *iSym=99 bNr=24 iOff=13272 oNr=2
+ iSym_pln 0
+GL_shSY2_add_sym *iSym=100 bNr=48 iOff=13296 oNr=4
+ iSym_pln 101
+GL_shSY2_add_sym *iSym=101 bNr=48 iOff=13344 oNr=4
+ iSym_tria 102 = 0.288675 0.500000 0.577350
+GL_shSY2_add_sym *iSym=102 bNr=48 iOff=13392 oNr=4
+ iSym_star 103 = 0.433013 0.500000 0.250000
+GL_shSY2_add_sym *iSym=103 bNr=72 iOff=13440 oNr=6
+ iSym_arh2 104 = 0.333333
+GL_shSY2_add_sym *iSym=104 bNr=36 iOff=13512 oNr=3
+ iSym_arh3 105 = 0.250000 0.125000 0.216506
+GL_shSY2_add_sym *iSym=105 bNr=84 iOff=13548 oNr=7
+ ex-GL_shSY2_init irc=0 5
+GR_view__ 4
+GL_scale_def 800 1.000000
+ ex-GL_scale_def 800.000000
+GL_view_update angZ=0.000000 angX=0.000000 Scale=800.000000
+   GR_cenRot = 0.000000 0.000000 0.000000
+M44FC_dump_mx4x4 ex-GL_view_update-GR_matf_dev
+  M44VX=    2.000,    0.000,    0.000,    0.000
+     VY=    0.000,    2.000,    0.000,    0.000
+     VZ=    0.000,    0.000,   -2.000,    0.000
+     PO=    0.000,    0.000,    0.000,    1.000
+GR_redraw -------------------------
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=0
+GL_shadCV_render idPrg=4 DL_nr=0
+GL_shSY2_render idPrg=5 DLdyn_nr=0
+DLdyn_dump :::::::::::::::::::::::: 
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+GUI_CB_win_is_up 
+AP_CB_win_is_up 
+ 
+GL_scale_def 800 5.000000
+ ex-GL_scale_def 160.000000
+Col__3f d1=0.100000 d2=0.100000 d3=0.600000
+================= Col_dump  ex-Col__3f
+  RGB 025 025 153, tra=0, sym=0 tex=0 color=1
+Att__width 1.000000
+================= Att_dump  ex-Att__3i
+ATT 00 00 00, dash=0, thick=1
+Att__width 3.000000
+================= Att_dump  ex-Att__3i
+ATT 00 00 00, dash=0, thick=3
+AP_do 1043
+GR_perm_pt dbi=1
+GL_add_pt dbi=1
+ f_add_d   0     -0.60      0.60     -0.45
+ ex-GL_add_sur dbi=1
+DL_add__ DL_nr=0 dbi=1 iOff=0
+GR_redraw -------------------------
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=1
+GL_shadCV_render idPrg=4 DL_nr=1
+ rend_CV----- 0 iOff=0
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+GL_shSY2_render idPrg=5 DLdyn_nr=0
+DLdyn_dump :::::::::::::::::::::::: 
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+AP_do 1043
+GR_perm_pt dbi=2
+GL_add_pt dbi=2
+ f_add_d   0     -0.15      0.70     -0.40
+ ex-GL_add_sur dbi=2
+DL_add__ DL_nr=1 dbi=2 iOff=12
+GR_redraw -------------------------
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=2
+GL_shadCV_render idPrg=4 DL_nr=2
+ rend_CV----- 0 iOff=0
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 1 iOff=12
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+GL_shSY2_render idPrg=5 DLdyn_nr=0
+DLdyn_dump :::::::::::::::::::::::: 
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+AP_do 1044
+GR_perm_cv dbi=1
+GL_add_cv dbi=1
+ f_add_d   0     -0.25      0.50      0.10
+ f_add_d   3     -0.40      0.50      0.10
+ f_add_d   6     -0.55      0.65      0.10
+ f_add_d   9     -0.55      0.90      0.10
+ ex-GL_add_sur dbi=1
+DL_add__ DL_nr=2 dbi=1 iOff=24
+GR_redraw -------------------------
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=3
+GL_shadCV_render idPrg=4 DL_nr=3
+ rend_CV----- 0 iOff=0
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 1 iOff=12
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 2 iOff=24
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=1
+GL_shSY2_render idPrg=5 DLdyn_nr=0
+DLdyn_dump :::::::::::::::::::::::: 
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+GR_perm_sur typ=77 ptNr=3 dbi=1
+GL_add_sur typ=77 ptNr=3 dbi=1
+ f_add_d   0      0.00      0.00      0.00
+ f_add_d   3      0.50      0.00      0.00
+ f_add_d   6      0.00      0.25      0.00
+ ex-GL_add_sur dbi=1
+DL_add__ DL_nr=3 dbi=1 iOff=0
+AP_do 1045
+GR_perm_sur typ=77 ptNr=3 dbi=2
+GL_add_sur typ=77 ptNr=3 dbi=2
+ f_add_d   0      0.25      0.00      0.10
+ f_add_d   3      0.75      0.00      0.10
+ f_add_d   6      0.25      0.25      0.10
+ ex-GL_add_sur dbi=2
+DL_add__ DL_nr=4 dbi=2 iOff=36
+GR_redraw -------------------------
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=5
+ rend_SUn----- 3 iOff=0
+ ex-GL_col_dl 0.097656 0.097656 0.597656 1.000000
+ rend_SUn----- 4 iOff=36
+ ex-GL_col_dl 0.097656 0.097656 0.597656 1.000000
+GL_shadCV_render idPrg=4 DL_nr=5
+ rend_CV----- 0 iOff=0
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 1 iOff=12
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 2 iOff=24
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=1
+GL_shSY2_render idPrg=5 DLdyn_nr=0
+DLdyn_dump :::::::::::::::::::::::: 
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+Att__width 2.000000
+================= Att_dump  ex-Att__3i
+ATT 00 00 00, dash=0, thick=2
+GR_dyn_sym2 typ=501
+DLdyn_add__ DL_nr=0 typ=501 size=3.000000
+GR_dyn_sym2 typ=502
+DLdyn_add__ DL_nr=1 typ=502 size=3.000000
+================= Att_dump  ex-Att__3i
+ATT 00 0c 0c, dash=0, thick=2
+GR_dyn_sym2 typ=505
+DLdyn_add__ DL_nr=2 typ=505 size=3.000000
+GR_dyn_sym2 typ=6
+DLdyn_add__ DL_nr=3 typ=6 size=0.000000
+DLdyn_add__ PosVec     0.500,    0.000,    0.250
+   at    -0.200,   -0.200,    0.000
+DLdyn_add_pvc size=0.000000
+ DLdyn_add_pvc-az=3.141593 180.000000 ay=-0.463648 -26.565051
+ f_add_d   0     -0.20     -0.20      0.00
+ f_add_d   3      0.30     -0.20      0.25
+ ex-GL_shSY2_add_cv ptNr=2
+GR_dyn_sym2 typ=6
+DLdyn_add__ DL_nr=5 typ=6 size=0.000000
+DLdyn_add__ PosVec     0.500,    0.500,    0.250
+   at    -0.200,   -0.200,    0.000
+DLdyn_add_pvc size=0.000000
+ DLdyn_add_pvc-az=-2.356194 -135.000000 ay=-0.339837 -19.471221
+ f_add_d   0     -0.20     -0.20      0.00
+ f_add_d   3      0.30      0.30      0.25
+ ex-GL_shSY2_add_cv ptNr=2
+GR_dyn_sym2 typ=6
+DLdyn_add__ DL_nr=7 typ=6 size=0.000000
+DLdyn_add__ PosVec    -0.500,    0.500,    0.250
+   at    -0.200,   -0.200,    0.000
+DLdyn_add_pvc size=0.000000
+ DLdyn_add_pvc-az=-0.785398 -45.000000 ay=-0.339837 -19.471221
+ f_add_d   0     -0.20     -0.20      0.00
+ f_add_d   3     -0.70      0.30      0.25
+ ex-GL_shSY2_add_cv ptNr=2
+GR_dyn_sym2 typ=6
+DLdyn_add__ DL_nr=9 typ=6 size=0.000000
+DLdyn_add__ PosVec    -0.500,   -0.500,    0.250
+   at    -0.200,   -0.200,    0.000
+DLdyn_add_pvc size=0.000000
+ DLdyn_add_pvc-az=0.785398 45.000000 ay=-0.339837 -19.471221
+ f_add_d   0     -0.20     -0.20      0.00
+ f_add_d   3     -0.70     -0.70      0.25
+ ex-GL_shSY2_add_cv ptNr=2
+GLBT_but_add ib=0 typ=1040 |Help|
+GLBT_but_add ib=1 typ=1041 |View|
+GLBT_but_add ib=2 typ=1042 |change-Color|
+GLBT_but_add ib=3 typ=1043 |Point|
+GLBT_but_add ib=4 typ=1044 |Curve|
+GLBT_but_add ib=5 typ=1045 |Surface|
+GR_redraw -------------------------
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=5
+ rend_SUn----- 3 iOff=0
+ ex-GL_col_dl 0.097656 0.097656 0.597656 1.000000
+ rend_SUn----- 4 iOff=36
+ ex-GL_col_dl 0.097656 0.097656 0.597656 1.000000
+GL_shadCV_render idPrg=4 DL_nr=5
+ rend_CV----- 0 iOff=0
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 1 iOff=12
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 2 iOff=24
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=1
+GL_shSY2_render idPrg=5 DLdyn_nr=11
+ rend_SY2----- 0 iSym=102
+ rend_SY2-siz=3.000000 aZ=0.000000 aX=0.000000
+  rend_SY2-pos    -1.600,   -0.400,    0.000
+ rend_SY2 0 sym=102 iOff=13392 vtxNr=4
+ rend_SY2----- 1 iSym=103
+ rend_SY2-siz=3.000000 aZ=0.000000 aX=0.000000
+  rend_SY2-pos    -1.200,   -0.400,    0.000
+ rend_SY2 1 sym=103 iOff=13440 vtxNr=6
+ rend_SY2----- 2 iSym=101
+ rend_SY2-siz=3.000000 aZ=0.000000 aX=0.000000
+  rend_SY2-pos    -0.800,   -0.400,    0.000
+ rend_SY2 2 sym=101 iOff=13344 vtxNr=4
+ rend_SY2----- 3 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 180.000005
+ rend_SY2-at 0.000000 333.434945
+ rend_SY2-siz 0.000000 160.000000 0.156250
+ rend_SY2----- 5 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 224.999996
+ rend_SY2-at 0.000000 340.528780
+ rend_SY2-siz 0.000000 160.000000 0.156250
+ rend_SY2----- 7 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 314.999992
+ rend_SY2-at 0.000000 340.528780
+ rend_SY2-siz 0.000000 160.000000 0.156250
+ rend_SY2----- 9 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 45.000001
+ rend_SY2-at 0.000000 340.528780
+ rend_SY2-siz 0.000000 160.000000 0.156250
+GLBT_render 6 ------------------ 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+GLBT_dump ::::::::::::::::::::::::
+   0 typ=1040 stat=0 pos= 0.000 end= 0.000 |Help|
+   1 typ=1041 stat=0 pos= 0.000 end= 0.000 |View|
+   2 typ=1042 stat=0 pos= 0.000 end= 0.000 |change-Color|
+   3 typ=1043 stat=0 pos= 0.000 end= 0.000 |Point|
+   4 typ=1044 stat=0 pos= 0.000 end= 0.000 |Curve|
+   5 typ=1045 stat=0 pos= 0.000 end= 0.000 |Surface|
+ _render-tag-sclX=0.035556 sclY=0.061990
+ ex-GLBT_render
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+Gtk_CB_resize 800 800
+GR_resize 
+ resize-mm_px 5.470085 5.510204
+ resize-sizWin-mm 146.250000 145.185185
+ resize_mm_mcs=0.013675 GR_sizY_mm_ndc=0.013776
+GL_view_update angZ=0.000000 angX=0.000000 Scale=160.000000
+   GR_cenRot = 0.000000 0.000000 0.000000
+M44FC_dump_mx4x4 ex-GL_view_update-GR_matf_dev
+  M44VX=    0.400,    0.000,    0.000,    0.000
+     VY=    0.000,    0.400,    0.000,    0.000
+     VZ=    0.000,    0.000,   -0.400,    0.000
+     PO=    0.000,    0.000,    0.000,    1.000
+ ex-GR_resizef
+=================== Gtk_CB_render 
+=================== GL_render__ 
+GL_shadSUn_render idPrg=3 DL_nr=5
+ rend_SUn----- 3 iOff=0
+ ex-GL_col_dl 0.097656 0.097656 0.597656 1.000000
+ rend_SUn----- 4 iOff=36
+ ex-GL_col_dl 0.097656 0.097656 0.597656 1.000000
+GL_shadCV_render idPrg=4 DL_nr=5
+ rend_CV----- 0 iOff=0
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 1 iOff=12
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=3
+ rend_CV----- 2 iOff=24
+================= Att_dump  rend_CV-iatt
+ATT 00 00 00, dash=0, thick=1
+GL_shSY2_render idPrg=5 DLdyn_nr=11
+ rend_SY2----- 0 iSym=102
+ rend_SY2-siz=3.000000 aZ=0.000000 aX=0.000000
+  rend_SY2-pos    -0.320,   -0.080,    0.000
+ rend_SY2 0 sym=102 iOff=13392 vtxNr=4
+ rend_SY2----- 1 iSym=103
+ rend_SY2-siz=3.000000 aZ=0.000000 aX=0.000000
+  rend_SY2-pos    -0.240,   -0.080,    0.000
+ rend_SY2 1 sym=103 iOff=13440 vtxNr=6
+ rend_SY2----- 2 iSym=101
+ rend_SY2-siz=3.000000 aZ=0.000000 aX=0.000000
+  rend_SY2-pos    -0.160,   -0.080,    0.000
+ rend_SY2 2 sym=101 iOff=13344 vtxNr=4
+ rend_SY2----- 3 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 180.000005
+ rend_SY2-at 0.000000 333.434945
+ rend_SY2-siz 0.000000 160.000000 0.156250
+ rend_SY2----- 5 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 224.999996
+ rend_SY2-at 0.000000 340.528780
+ rend_SY2-siz 0.000000 160.000000 0.156250
+ rend_SY2----- 7 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 314.999992
+ rend_SY2-at 0.000000 340.528780
+ rend_SY2-siz 0.000000 160.000000 0.156250
+ rend_SY2----- 9 iSym=-6
+ rend_SY2-siz=0.000000 aZ=0.000000 aX=0.000000
+ rend_SY2-aZ 0.000000 45.000001
+ rend_SY2-at 0.000000 340.528780
+ rend_SY2-siz 0.000000 160.000000 0.156250
+GLBT_render 6 ------------------ 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+GLBT_dump ::::::::::::::::::::::::
+   0 typ=1040 stat=0 pos=-1.000 end=-0.840 |Help|
+   1 typ=1041 stat=0 pos=-0.822 end=-0.662 |View|
+   2 typ=1042 stat=0 pos=-0.644 end=-0.200 |change-Color|
+   3 typ=1043 stat=0 pos=-0.182 end= 0.013 |Point|
+   4 typ=1044 stat=0 pos= 0.031 end= 0.227 |Curve|
+   5 typ=1045 stat=0 pos= 0.244 end= 0.511 |Surface|
+ _render-tag-sclX=0.035556 sclY=0.061990
+ ex-GLBT_render
+GL_shSY2_axis 
+ GR_sizX_mm_ndc=0.013675 GR_sizY_mm_ndc=0.013776
+Gtk_CB_key ev=8 iKey=65307
+GUI_CB_key 402 

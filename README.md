@@ -105,7 +105,7 @@ always normal to eyevector, rotated
 	  return 0;
 	}
 ~~~
-Full code see tst_prim1.c
+Full code see app.c
 
 
 #### Build:
@@ -118,19 +118,24 @@ sudo apt install libgtk-3-dev mesa-common-dev
 On redhat-OS:  
 sudo yum install gtk3-devel mesa-libGL-devel  
 
+- in console goto directory ~/gcad-GL/app/
+- build list-tool ../bin/GUI_dlg1_gtk3 with:  
+./GUI_dlg1.sh  
+- build and execute demoprogram a.out with:  
 make && ./a.out  
 For using see Help-file using.txt and console-output  
 
 
 #### TODO: (not yet implemented, help wanted)
-- perspectivic projection
 - shaded_faces - geometry-shader ?  
     get angle normal-eyeVector = shading-factor
 - selection of objects
 - select-box (display box, select all objects in box)
 - line-stipple (dashed, dashed-long, dash-dot)
 - tesselate with shader (may not modify boundary - to be tested)
+- perspectivic projection
 - make shared overlay (libgcad-GL-gtk3-gl3.so)
+
 #### Already working:
 - orthographic projection with zoom, pan, rotate
 - create points, curves, triangles, 2D-buttons
@@ -138,12 +143,13 @@ For using see Help-file using.txt and console-output
 - hide / redisplay objects
 
 
+#### History:
+2021-10-11  dynamic-symbols, directory-structure, cursors, blocking ..
+2021-09-10  First release.
 
 
+~~~
 Report bugs, improvements to support at gcad3d.org
-
-
-2021-09-10   First release.
-
+~~~
 
 // EOF

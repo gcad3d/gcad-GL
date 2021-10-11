@@ -1,0 +1,13 @@
+# gdb - initfile gcad-GL; use with     gdb -x ./gdbinit a.out
+
+#break GR_init0
+
+# ERROR BUFFER OVERFLOW  in DLdyn_add__
+break ../dl/dl_dyn.c:145
+
+run
+
+#p shSY2.idPrg
+#watch shSY2.idPrg
+
+
