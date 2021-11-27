@@ -28,6 +28,7 @@ UT3D_vc_multvc            vo = vi * fakt     Vec-multiplication     (INLINE)
 UT3D_vc_invert            Vector invert (change direction)                   INLINE
 UT3D_vc_setLength         change vectorlength
 UT3D_vc_3db               Vector = 3 doubles (x, y, z)              (INLINE)
+UT3D_vc_2pt               Vector = Point -> Point                   (INLINE)
 UT3D_vc_rotvc_angZ        rotate a vector around Z-axis
 UT3D_vc_rotvc_angX        rotate a vector around the X-axis
 UT3D_vc_rotvc_angZ_angX   rotate a vector around Z-axis then around X-axis
@@ -54,7 +55,6 @@ List_functions_end:
 // #undef extern
  
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
-#include "../ut/ut.h"                      // ACOS
 
 
 

@@ -39,14 +39,13 @@ List_functions_end:
 
 
 #include "../ut/geo.h"                // Point Plane Mat_4x4D ..
-#include "../ut/ut.h"                 // TX_Print
+#include "../ut/deb.h"                // DEB_dump_..
 #include "../ut/matrix.h"
 #include "../gr/gr.h"                 // Att_ln GR_..
 #include "../gl/gl.h"                 // shSY2
 #include "../gr/col.h"                // COL_YELLOW
 #include "../gl/gl_shSY2.h"           // symTab
 #include "../gl/glbt.h"
-#include "../app/deb.h"               // DEB_dump_..
 
 
 #define I2D_TABSITZ  32
@@ -160,9 +159,9 @@ static float I2D_endTab[I2D_TABSITZ];      // X-value endPos of tag in modelCoor
   // return if no 2D-obj is active
   if(I2D_iNr <= 0) return 0;
 
-  printf("GLBT_render %d ------------------ \n",I2D_iNr);
-  printf(" GR_sizX_mm_ndc=%lf GR_sizY_mm_ndc=%lf\n",GR_sizX_mm_ndc,GR_sizY_mm_ndc);
-  GLBT_dump ();
+  // printf("GLBT_render %d ------------------ \n",I2D_iNr);
+  // printf(" GR_sizX_mm_ndc=%lf GR_sizY_mm_ndc=%lf\n",GR_sizX_mm_ndc,GR_sizY_mm_ndc);
+  // GLBT_dump ();
 
   // printf("  GR_scaleWinY=%f GR_SclFontX=%f GR_SclFontY=%f\n",
           // GR_scaleWinY, GR_SclFontX, GR_SclFontY);
@@ -216,7 +215,7 @@ static float I2D_endTab[I2D_TABSITZ];      // X-value endPos of tag in modelCoor
   // get size of 1 char in device-coords (-1, to +1)
   sclX = GR_sizX_mm_ndc * GR_vf1SizXmm * GR_vf1SizScl;
   sclY = GR_sizY_mm_ndc * GR_vf1SizYmm * 1.5f * GR_vf1SizScl;
-    printf(" _render-tag-sclX=%f sclY=%f\n",sclX,sclY);
+    // printf(" _render-tag-sclX=%f sclY=%f\n",sclX,sclY);
 
   GR_ButtY_ndc = -1. + sclY;
 

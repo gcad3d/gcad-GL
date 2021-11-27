@@ -13,6 +13,7 @@ needs ./geo.h
 void M44D_init (Mat_4x4D ma);
 void M44D_scale__ (Mat_4x4D dMat, double dSx, double dSy, double dSz);
 void M44D_transl__ (Mat_4x4D dMat, Point *ptOri);
+void M44D_transl_3 (Mat_4x4D dMat, double dx, double dy, double dz);
 void M44D_rot_X (Mat_4x4D dMat, double angr);
 void M44D_rot_Z (Mat_4x4D dMat, double angr);
 void M44D_rot_Y (Mat_4x4D dMat, double angr);

@@ -1,4 +1,4 @@
-/*  ./ut_TX.c
+/*  ../ut/TX_cons.c
 //================================================================
 Copyright 2021 Thomas Backmeister, Franz Reiter, Karl Sauer - support@gcad3d.org
 
@@ -7,8 +7,8 @@ of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 //================================================================
 
 
-write messages, errors
-console-version, not GUI-Version
+write messages, errors;  console-version,
+ GUI-Version is ../ut/TX_ui.c
 
 -----------------------------------------------------
 TODO:
@@ -57,7 +57,8 @@ cc -c ut_TX.c
 
 
 #include "../ut/ut.h" 
-
+#include "../gui/gui.h"             // GUI_dlg_info1
+#include "../ut/TX_.h"                    // TX_Print ..
 
 /*  alle Ausgaben EIN */
 int   TX_mode = ON;

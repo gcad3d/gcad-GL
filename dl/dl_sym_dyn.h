@@ -1,4 +1,4 @@
-/* ./dl_dyn.h
+/* ./dl_sym_dyn.h
 Displaylist dynamic objects
 needs:
  ../ut/ut_types.h       UINT_32
@@ -18,19 +18,19 @@ static in ./dl_dyn.h.c
 
 typedef struct {Point pos; UINT_32 iatt, iOff;
                 float size, az, ay; UINT_16 vtxNr;
-                short oTyp, lTyp;}                DLdynrec;
+                short oTyp, lTyp;}                DL_SYD_rec;
 
 
 //================================================================
-extern int DLdyn_siz;                 // size of dispList
-extern int DLdyn_nr;                  // nr of existig objects
-extern DLdynrec *DLdyn;
+extern int DL_SYD_siz;                 // size of dispList
+extern int DL_SYD_nr;                  // nr of existig objects
+extern DL_SYD_rec *DL_SYD_tab;
 
 
 //================================================================
-int DLdyn_init__ ();
-int DLdyn_add__ (int typ, void *pos, float size, void *att);
-int DLdyn_add_pvc (void *data, float size, void *att);
-int DLdyn_dump ();
+int DL_SYD_init__ ();
+int DL_SYD_add__ (int typ, void *pos, float size, void *att);
+int DL_SYD_add_pvc (void *data, float size, void *att);
+int DL_SYD_dump ();
 
 // EOF

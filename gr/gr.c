@@ -1,4 +1,4 @@
-/* ./gr.c
+/* ../gr/gr.c
 //================================================================
 Copyright 2021 Thomas Backmeister, Franz Reiter, Karl Sauer - support@gcad3d.org
 
@@ -52,23 +52,25 @@ List_functions_end:
 #include <stdarg.h>                    // va_list va_arg
 #include <math.h>
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // application-types
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
-#include "../ut/ut.h"                      // TX_Error
 #include "../ut/matrix.h"
+#include "../ut/utx.h"                     // UTX_add_fl_f
+#include "../ut/deb.h"                     // DEB_dump_pt
 #include "../gl/gl_font1.h"                // GR_vf1SizXmm
+#include "../gl/gl_shCV.h"                 // chrTab
+#include "../gl/gl_shSY2.h"                // GL_ISYM_CHR
 #include "../gl/glbt.h"                    // GLBT_sele__
 #include "../db/db.h"                      // DB_..
 #include "../dl/dl.h"                      // DL_init__
-#include "../dl/dl_dyn.h"                  // DLdyn_init__
+#include "../dl/dl_sym_dyn.h"              // DL_SYD_init__
+#include "../dl/dl_sym_perm.h"             // DL_SYP_init__
 #include "../gui/gui.h"                     // GUI_CB_sele
-#include "../app/deb.h"                     // DEB_dump_pt
 
 #define extern  // does eliminate "extern"
 #include "../gr/gr.h"                    // FUNC_ViewTop ..
 #undef extern
 
+#include "../gr/gr_gtx.h"                    // GR_gxt_subst1
 #include "../gr/col.h"                     // Att__width
 #include "../gl/gl.h"
 #include "../app/app.h"               // AP_*
@@ -220,6 +222,7 @@ int  isu;   // ??
 
 
   L_done:
+    GL_view_ortho ();
     GL_view_update ();
     // compute vectors GR_eyeZ GR_eyeX GR_eyeY
     if(i_get_eyeVecs) GR_get_eyeVecs ();
@@ -430,7 +433,7 @@ int  isu;   // ??
   Mat_4x4D   midv;
 
   // get midv = inverse GR_matd_view
-  M44D_inv__ (midv, GR_matd_mdl[0]);
+  M44D_inv__ (midv, GR_matd_mdl[7]);
 
   // get the vectors out of the matrix
   GR_eyeX.dx = midv[0][0];
@@ -513,7 +516,8 @@ int  isu;   // ??
     irc = GLBT_sele__ (GR_selPosX);
     if(irc >= 0) {
       // 2D-system-button selected
-      GUI_CB_sele (irc);
+      irc = GUI_CB_sele (irc);
+      if(irc) { GR_render_skip = 1; goto L_return; }
       goto L_exit;
     }
   }
@@ -548,6 +552,10 @@ int  isu;   // ??
   L_exit:
     GR_redraw ();   // only for testDisplayObjs ?
     printf(" ex-GR_sele__\n");
+
+
+  //================================================================
+  L_return:
   return 0;
 
 }
@@ -561,8 +569,8 @@ int  isu;   // ??
   printf("GR_init0 \n");
 
   DL_init__ ();     // init DisplayList permanent objects
-  DLdyn_init__ ();  // init Displaylist dynamic objects
-
+  DL_SYP_init__ ();  // init Displaylist permanent-symbol objects
+  DL_SYD_init__ ();  // init Displaylist dynamic-symbol objects
 
 
   GR_Modsiz = 1.;
@@ -588,6 +596,8 @@ int  isu;   // ??
   GR_angX = 0;
 
   GR_constrPln = PLANE_NUL;
+
+  GR_render_skip = 0;
 
   return 0;
 
@@ -671,6 +681,7 @@ int  isu;   // ??
 
 //----------------------]------------------------------------------
   // set view-matrix GR_matf_dev and model-matrix mfm
+  GL_view_ortho ();
   GL_view_update ();
 
 
@@ -720,7 +731,7 @@ int  isu;   // ??
   // iOff = GL_dyn_sym2 (typ, pos, att, size);
 
   // store dataBaseIndex, bufferOffset (in bytes), objTyp in dynamic-dispList
-  DLdyn_add__ (typ, data, size, att);
+  DL_SYD_add__ (typ, data, size, att);
 
   return 0;
 
@@ -745,7 +756,7 @@ int  isu;   // ??
 //   iOff = GL_dyn_sym3 (typ, data, att, size);
 // 
 //   // store dataBaseIndex, bufferOffset (in bytes), objTyp in dynamic-dispList
-//   DLdyn_add__ (typ, data, size, att, 0, 0);
+//   DL_SYD_add__ (typ, data, size, att, 0, 0);
 // 
 //   return 0;
 // 
@@ -825,6 +836,79 @@ int  isu;   // ??
 }
 
 
+//=================================================================================
+ int GR_perm_Note (Dimen *dim1, int oNr, int typ, void *iatt, int objID, int dbi) {
+//=================================================================================
+
+  int     i1, i2, bMod;
+  double  a1, d1, dVal;
+  Line2   ll1, ll2, lnd;
+  SymRef2 hd1, hd2;
+  Vector2 vct;
+  char    outText[256];
+
+
+  printf("GR_perm_Note typ=%d objID=%d dbi=%d\n",typ,objID,dbi);
+
+  // analyze dim1 - get lines
+/*
+  if(dim1->dtyp == 3)      GL_set_Dima   (att, dim1);
+  else if(dim1->dtyp > 20) GL_set_Ldr    (att, dim1);    // 21
+  else if(dim1->dtyp > 1)  GL_set_Dimrad (att, dim1);    // 2
+  else if(dim1->dtyp > 0)  GL_set_Dimdia (att, dim1);    // 1
+  else                     GL_set_Dimen  (att, dim1);    // 0
+*/
+
+
+  //----------------------------------------------------------------
+  // (dtyp = 0) linear-dimension
+  bMod = GR_dim_lin__ (&ll1, &ll2, &lnd, &hd1, &hd2, &vct, &dVal, outText,
+                       dim1);
+
+    DEB_dump_obj__ (Typ_LN2, &ll1, " perm_Note-ll1");
+    DEB_dump_obj__ (Typ_LN2, &ll2, " perm_Note-ll2");
+    DEB_dump_obj__ (Typ_LN2, &lnd, " perm_Note-lnd");
+
+  DL_SYP_add__ (Typ_LN2, &ll1, 0.f, NULL);
+  DL_SYP_add__ (Typ_LN2, &ll2, 0.f, NULL);
+  DL_SYP_add__ (Typ_LN2, &lnd, 0.f, NULL);
+
+
+  return 0;
+
+}
+
+
+//=================================================================================
+ int GR_perm_GTxt (GText *tx1, int oNr, int typ, void *iatt, int objID, int dbi) {
+//=================================================================================
+// GR_perm_GTxt            create grafic-(3D-)text
+
+  int   i1, ic;
+  char  *sp;
+
+  printf("GR_perm_GTxt |%s| siz=%f dir=%f\n",tx1->txt, tx1->size, tx1->dir);
+
+
+  // loop tru chars
+  sp = tx1->txt;
+  i1 = 0;
+  while(sp[i1]) {
+      printf(" GTxt %d = %c\n",i1,sp[i1]);
+    ic = GL_ISYM_CHR(sp[i1]); // get index for next char
+    // glDrawArrays (chrTab[ic].lTyp, chrTab[ic].iOff / 12, chrTab[ic].oNr);   
+    // DL_SYP_add__ (Typ_LN2, &ll1, 0.f, NULL);
+
+
+    ++i1;
+  }
+
+
+  return 0;
+
+}
+
+
 //================================================================
   int GR_perm_txtA (double fPos[], char *txt, Att_ln iatt, int dbi) {
 //================================================================
@@ -836,6 +920,156 @@ printf("************ TODO\n");
 
   
   return 0;
+
+}
+
+
+//=======================================================================
+  int GR_dim_lin__ (Line2 *ll1, Line2 *ll2, Line2 *lnd,
+                    SymRef2 *hd1, SymRef2 *hd2, Vector2 *vct,
+                    double *dval, char *outText,
+                    Dimen *dim1) {
+//=======================================================================
+// create objects for linear dimension.
+// components of dimension:
+// Output:
+//   2 leaderlines (ll1, ll2);
+//   1 dimensionLine (lnd);
+//   2 symbols at the ends of the dimensionLine (hd1, hd2);
+//   direction of symbols and text (vct);
+//   value of the dimemsion (distanceValue; dval).
+//   the decoded text (outText)
+//   RetCod:  BlockColor; 0=keine, 1-9 ist Farbe und wird als Block dargestellt.
+
+// see GL_DrawDimen SVG_w_dim__
+
+  int        i12, i13, i23, bMod;
+  double     txAng, ldAng, d12, dtx;
+  char       dimText[256];
+  Point2     *pt1, *pt2, *pt3;
+  Vector2    vcl;
+
+
+  // printf("GR_dim_lin__ \n");
+
+  pt1 = (Point2*)&dim1->p1;
+  pt2 = (Point2*)&dim1->p2;
+  pt3 = (Point2*)&dim1->p3;
+
+
+  txAng = dim1->a1;               // Winkel der Textzeile
+  ldAng = txAng - 90.;            // Winkel der Leaderlines
+    // printf(" txAng=%f ldAng=%f\n",txAng,ldAng);
+
+  // Richtung Leaderline:     vcl
+  UT2D_vc_angr (&vcl, UT_RADIANS(ldAng));
+
+  // Richtung Text u. Arrows: vct
+  UT2D_vc_angr (vct, UT_RADIANS(txAng));
+
+  // Leaderlines.Den pt3 auf pt1/pt2-vcl projizieren.
+  UT2D_pt_projptptvc (&hd1->pt, pt3, pt1, &vcl);
+  UT2D_pt_projptptvc (&hd2->pt, pt3, pt2, &vcl);
+
+
+  // compute distanceValue
+  *dval = UT2D_len_2pt (&hd1->pt, &hd2->pt);
+    // printf(" dval = %f\n",*dval);
+
+
+  // create/decode text; value=dVal
+  GR_gxt_prep1 (dimText, *dval);
+    // printf(" tx1: |%s|\n",dimText);
+
+  // substitute [% by dimText
+  bMod = GR_gxt_subst1 (outText, dim1->txt, dimText);
+    // printf(" tx2: |%s|\n",outText);
+
+
+
+  // Leaderlines um Texthoehe verlaengern.
+  // wenn pt3a oben ist: Abstand umdrehen !
+  ll1->p1 = UT2D_pt_pt3 (pt1);
+  if(UT2D_sidPerp_ptvc (&hd1->pt, pt1, &vcl)> 0) {
+    d12 = GR_tx_ldExt;
+  } else {
+    d12 = -GR_tx_ldExt;
+  }
+  UT2D_pt_traptvclen (&ll1->p2, &hd1->pt, &vcl, d12);
+
+
+
+  // ebenso fuer ll2:
+  ll2->p1 = UT2D_pt_pt3 (pt2);
+  if(UT2D_sidPerp_ptvc (&hd2->pt, pt2, &vcl)> 0) {
+    d12 = GR_tx_ldExt;
+  } else {
+    d12 = -GR_tx_ldExt;
+  }
+  UT2D_pt_traptvclen (&ll2->p2, &hd2->pt, &vcl, d12);
+
+
+
+  // get Headtypes
+  hd2->typ = dim1->hd % 10;
+  // *sTyp1 = (dim1->hd - *sTyp2) / 10;
+  hd1->typ = dim1->hd  / 10;
+    // printf("Headtypes = %d,%d\n", hd1->typ, hd2->typ);
+
+
+
+  // test if text is outside of the leaderlines;
+  // if yes: if Headtypes not given: fix Headtypes
+  //    the dimensionLine starts at p3; extend with half blocksize
+  i13 = UT2D_sidPerp_ptvc (&hd1->pt, pt3, vct); // s1 rechts od links von pt3
+  i23 = UT2D_sidPerp_ptvc (&hd2->pt, pt3, vct); // s2 rechts od links von pt3
+    // printf(" i13 %d i23 %d\n",i13,i23);
+
+
+
+  if((i13 + i23) == 0) {  // different: text is inside !
+    lnd->p1 = hd1->pt;
+    lnd->p2 = hd2->pt;
+    // test if ll2 is right of ll1; if not: change symboltypes !
+    // d12 = UT2D_len_ptlnX(&lnd->p1, &lnd->p2, vct);
+    if(i23 < 0) {
+      MEM_swap_int (&hd1->typ, &hd2->typ);
+      // printf(" SWAP SYMBOLTYPES !\n");
+    }
+    goto L_9;
+  }
+
+
+  // Text ist aussen: p3 um halbe Blockbreite nach aussen schieben
+  lnd->p1 = hd1->pt;
+  lnd->p2 = hd2->pt;
+  i12 = UT2D_sidPerp_ptvc (&hd1->pt, &hd2->pt, vct); // s1 rechts od links von s2
+    // printf(" dimText outside %d %d\n",i13,i23);
+  d12 = GR_gtx_ckBlockWidth (outText, AP_txdimsiz) / 2.;
+    // printf(" d12=%f\n",d12);
+
+
+  if(i12 < 0) {        //   1 2
+    MEM_swap_int (&hd1->typ, &hd2->typ);
+    if(i13 > 0) {      // 3 1 2
+      UT2D_pt_traptvclen (&lnd->p1, pt3, vct, -d12);
+    } else {           //   1 2 3
+      UT2D_pt_traptvclen (&lnd->p2, pt3, vct, d12);
+    }
+
+  } else {             //   2 1
+    if(i13 > 0) {      // 3 2 1
+      UT2D_pt_traptvclen (&lnd->p2, pt3, vct, -d12);
+    } else {           //   2 1 3
+      UT2D_pt_traptvclen (&lnd->p1, pt3, vct, d12);
+    }
+
+
+  }
+
+
+  L_9:
+  return bMod;
 
 }
 

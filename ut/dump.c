@@ -1,4 +1,4 @@
-/* ./matrix.c
+/* ../ut/dump.c
 //================================================================
 Copyright 2021 Thomas Backmeister, Franz Reiter, Karl Sauer - support@gcad3d.org
 
@@ -30,6 +30,44 @@ List_functions_end:
 #include <stdarg.h>                    // va_list
 
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
+
+#define DEB_dump_obj_out(cps)\
+  printf("%s\n",(cps));
+
+
+//===============================================================
+  int DEB_dump_obj__ (int typ, void *data, char *txt, ...) {
+//===============================================================
+
+  char     cps[512];
+  Line2    *ln2;
+
+
+  //----------------------------------------------------------------
+  if(typ == Typ_LN2) {
+    ln2 = data;
+    sprintf(cps,"2D-Line %s typ = %d",txt,ln2->typ);
+    // UT3D_dump_add (sTab, cbuf, ipar, ICO_CI);
+    DEB_dump_obj_out (cps);
+    sprintf(cps,"(Line2).p1=%9.3f,%9.3f",ln2->p1.x,ln2->p1.y);
+    // UT3D_dump_add (sTab, cbuf, ipar, ICO_PT);
+    DEB_dump_obj_out (cps);
+    sprintf(cps,"(Line2).p2=%9.3f,%9.3f",ln2->p2.x,ln2->p2.y);
+    // UT3D_dump_add (sTab, cbuf, ipar, ICO_PT);
+    DEB_dump_obj_out (cps);
+
+  //----------------------------------------------------------------
+  } else {
+    TX_Error ("DEB_dump_obj__ unsupp. typ %d",typ);
+    return -1;
+  }
+
+
+  //----------------------------------------------------------------
+
+  return 0;
+
+}
 
 
 //================================================================

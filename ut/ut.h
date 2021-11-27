@@ -11,26 +11,9 @@
 
 
 //================================================================
-void TX_Print (char* txt, ...);
-void TX_Error (char* txt, ...);
-void TX_Write (char* txt);
-
-
-double ACOS (double);
-
-
-//================================================================
- 
-void* MEM_alloc_tmp (int);
-// allocate temp-space 
-// DO NOT free; space is freed on exit of active function.
-#define MEM_alloc_tmp(siz)\
- alloca(siz);\
- // if(siz >= SPC_MAX_STK) printf("*** ERR MEM_alloc_tmp |%s| %d\n",__func__,siz);\
- // fflush(stdout)
-
-
-
+// int DSIGTOL (double, double);
+// double ACOS (double);
+// int ICHG01 (int);
 
 //================================================================
 
@@ -57,6 +40,13 @@ void* MEM_alloc_tmp (int);
 #define UTP_angr_set_0_2pi(angr)\
  (((angr)<0.)?((angr)+RAD_360):(((angr)>RAD_360)?((angr)-RAD_360):(angr)))
 
+
+// DSIGTOL                              sign of double with tolerance (-1|0|1)
+#define DSIGTOL(dd,tol) ((dd>tol)?(1):((dd<-(tol))?(-1):(0)))
+// replacing code:
+//   if (fabs(dd) < tol) rc =  0;
+//   else if (dd < 0.)   rc =  1;
+//   else                rc = -1;
 
 
 #define ACOS(dCos) ((dCos>=1.)?(0.):((dCos<=-1.)?(RAD_180):acos(dCos)))

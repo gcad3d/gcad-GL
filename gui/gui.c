@@ -50,11 +50,9 @@ List_functions_end:
 #include <math.h>
 
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../gui/gui.h"
 #include "../ut/geo.h"                     // Point
+#include "../gui/gui.h"
 #include "../gr/gr.h"
-#include "../ut/ut.h"                      // TX_Print
 #include "../ut/utx.h"                     // UTX_CleanCR
 #include "../dl/dl.h"                      // DL_..
 #include "../gl/glbt.h"                    // GLBT_..
@@ -142,13 +140,12 @@ static char *exe_GUI_dlg1 = {"./GUI_dlg1_gtk3"};
   int GUI_CB_sele (int typ) {
 //================================================================
 // GUI_CB_sele               callback from obj-selection
+// retCode    0=redraw; 1=do-not-redraw
 
 
   printf("GUI_CB_sele %d\n",typ);
 
-  AP_do (typ);
-
-  return 0;
+  return AP_do (typ);
 
 }
 

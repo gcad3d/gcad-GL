@@ -27,8 +27,6 @@ List_functions_end:
 
 #include <GL/gl.h>
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // Typ_PT ..
 #include "../ut/geo.h"             // Point Plane Mat_4x4D ..
 #include "../gr/gr.h"                      // Att_ln GR_..
 #include "../gl/gl.h"                      // shCV

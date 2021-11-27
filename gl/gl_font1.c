@@ -29,7 +29,6 @@ List_functions_end:
 
 
 #include "../ut/geo.h"                    // Point
-#include "../ut/ut.h"                     // TX_Error
 #include "../gr/gr.h"                     // GR_SclFontX GR_SclFontY
 #include "../gl/gl_font1.h"               // GL_vfont1
 

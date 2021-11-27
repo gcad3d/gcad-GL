@@ -22,7 +22,10 @@ GL_dyn_sym3
 GL_render__         redraw OpenGL-window
 
 GL_init
+GL_InitInfo         disp GL-version ..
 GL_viewport         Set Viewport to window dimensions
+GL_view_ortho       set view-matrix GR_matd_scl (ortho from WCS)
+GL_view_update      set view-matrix GR_matd_view
 GL_scale_def        set default-scale
 GL_buffer_f_add_d   add floats into active buffer from doubles
 
@@ -31,6 +34,7 @@ GL_shad_create      create VERTEX_SHADER and FRAGMENT_SHADER
 GL_shad_make        compile, check shader
 
 GL_test_bufferSD    test (read and print) BufferSubData
+GL_test_VS1         test vertex-shader
 
 List_functions_end:
 =====================================================
@@ -49,18 +53,16 @@ List_functions_end:
 
 #include <GL/gl.h>
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // Typ_PT
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
-#include "../ut/ut.h"                      // MEM_..
+#include "../ut/deb.h"                     // DEB_dump_pt
 #include "../ut/matrix.h"                  // M44..
+#include "../ut/ut.h"                      // TX_Error
 #include "../gr/gr.h"                      // GR_..
 #include "../dl/dl.h"                      // DL_..
-#include "../dl/dl_dyn.h"                  // DLdyn_add____
+#include "../dl/dl_sym_dyn.h"                  // DL_SYD_add____
 #include "../gui/gui.h"                     // GUI_CB_win_is_up
-#include "../app/deb.h"                     // DEB_dump_pt
 #include "../app/app.h"               // Typ_*
-#include "gl_shadCV.h"
+#include "gl_shCV.h"
 #include "gl_shadSUn.h"
 #include "gl_shSY2.h"
 #include "glbt.h"
@@ -103,6 +105,36 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
 //================================================================
 
 
+
+//=====================================================================
+  int GL_InitInfo () {
+//=====================================================================
+// glDrawElements needs GL_VERSION > 2.0
+
+  int     i1, i2;
+
+  printf("GL_InitInfo\n");
+
+
+  printf("GL_RENDERER:    %s\n",glGetString(GL_RENDERER));
+  printf("GL_VERSION:     %s\n",glGetString(GL_VERSION));
+  // printf("GL_EXTENSIONS:  %s\n",glGetString(GL_EXTENSIONS));
+  glGetIntegerv (GL_MAJOR_VERSION, &i1);
+  glGetIntegerv (GL_MINOR_VERSION, &i2);
+    printf(" GL_MAJOR_VERSION = %d, GL_MINOR_VERSION = %d\n",i1,i2);
+  // glGetIntegerv (GL_DEPTH_BITS, &i1);
+    // printf(" GL_DEPTH_BITS = %d\n",i1);
+  
+
+  // printf("GLU_VERSION:    %s\n",gluGetString(GLU_VERSION));
+  // printf("GLU_EXTENSIONS: %s\n",gluGetString(GLU_EXTENSIONS));
+
+  return 0;
+}
+
+
+
+
 //================================================================
   int GL_init () {
 //================================================================
@@ -136,8 +168,8 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
   irc = GL_shadSUn_init ();
   if(irc < 0) exit(0);
 
-  // create points/curves-shader shadCV
-  irc = GL_shadCV_init ();
+  // create points/curves-shader shCV
+  irc = GL_shCV_init ();
   if(irc < 0) exit(0);
 
   // create 2D-symbols-shader shSY2
@@ -204,9 +236,9 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
 
 
 //================================================================
-  int GL_view_update () {
+  void GL_view_ortho () {
 //================================================================
-// GL_view_update                    set view-matrix GR_matf_dev and model-matrix mfm
+// GL_view_ortho             set view-matrix GR_matd_scl (ortho from WCS)
 
   double scl, sx, sy, sz;
 
@@ -216,13 +248,33 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
 
 
   //----------------------------------------------------------------
-  // set view-matrix for scale
-
-  scl = GR_Scale * 2.;
-  sx = scl / GR_sizWinX_px;
-  sy = scl / GR_sizWinY_px;
-  sz = scl / -60000.;                    // ???????
+  // set view-matrix for scale (deviceCoords from userCoords)
+  sx = 2. / (double)GR_sizWinX_px;
+  sy = 2. / (double)GR_sizWinY_px;
+  sz = 2. / -60000.;                    // ???????
   M44D_scale__ (GR_matd_scl, sx, sy, sz);
+
+}
+
+
+//================================================================
+  void GL_view_update () {
+//================================================================
+// GL_view_update                    set view-matrix GR_matd_view
+
+  double scl, sx, sy, sz;
+
+
+  printf("GL_view_update angZ=%f angX=%f Scale=%f\n",GR_angZ,GR_angX,GR_Scale);
+  printf("   GR_cenRot = %f %f %f\n",GR_cenRot.x,GR_cenRot.y,GR_cenRot.z);
+
+
+  //----------------------------------------------------------------
+//   // set view-matrix for scale (deviceCoords from userCoords)
+//   sx = 2. / (double)GR_sizWinX_px;
+//   sy = 2. / (double)GR_sizWinY_px;
+//   sz = 2. / -60000.;                    // ???????
+//   M44D_scale__ (GR_matd_scl, sx, sy, sz);
 
 
 
@@ -232,21 +284,28 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
   // translate to screen-center 
   M44D_transl__ (GR_matd_mdl[1], &GR_cenView);
 
+  // scale 
+  scl = GR_Scale;
+  M44D_scale__ (GR_matd_mdl[2], scl, scl, scl);
+
   // set rotation
   // rotate around model-Z-axis (in WCS always 0,0,1)
-  M44D_rot_Z (GR_matd_mdl[2], GR_angZ);
+  M44D_rot_Z (GR_matd_mdl[3], GR_angZ);
 
   // rotate around GR_view_vx (vector parallel to horizontal windowboundary)
-  M44D_rot_X (GR_matd_mdl[3], GR_angX);
+  M44D_rot_X (GR_matd_mdl[4], GR_angX);
+
 
   // modelmatrix = rotation * translation
-  M44D_mult_n (GR_matd_mdl[0], 3, &GR_matd_mdl[1]);
+  // M44D_mult_n (GR_matd_mdl[0], 4, &GR_matd_mdl[1]);
 
-
-
-  //----------------------------------------------------------------
   // multiply view-matrix * model-matrix    - deviceCoords from modelCoords
-  M44D_mult__ (GR_matd_view, GR_matd_scl, GR_matd_mdl[0]);
+  // M44D_mult__ (GR_matd_view, GR_matd_scl, GR_matd_mdl[0]);
+
+M44D_mult__ (GR_matd_mdl[5], GR_matd_mdl[4], GR_matd_mdl[3]);  // 5=rot+tilt
+M44D_mult__ (GR_matd_mdl[6], GR_matd_mdl[5], GR_matd_mdl[2]);  // 6=rot+tilt+scl
+M44D_mult__ (GR_matd_mdl[7], GR_matd_mdl[6], GR_matd_mdl[1]);  // 7=rot+tilt+scl+tra
+M44D_mult__ (GR_matd_view, GR_matd_scl, GR_matd_mdl[7]);
 
   // get float mat-4x4 from double mat-4x4
   M44FC__m44dr (GR_matf_dev, GR_matd_view);
@@ -254,8 +313,6 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
 
   //----------------------------------------------------------------
     M44FC_dump_mx4x4 ((float*)GR_matf_dev, "ex-GL_view_update-GR_matf_dev");
-
-  return 0;
 
 }
 
@@ -304,7 +361,7 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
 //   GL_buffer_f_add_d (iOff, oSiz, (double*)pos);
 // 
 //   // store dataBaseIndex, bufferOffset (in bytes), objTyp in dynamic-dispList
-//   DLdyn_add__ (typ, pos, size, (void*)&att, iOff, 1);
+//   DL_SYD_add__ (typ, pos, size, (void*)&att, iOff, 1);
 
   //----------------------------------------------------------------
   // disactivate active buffer and VAO
@@ -631,7 +688,7 @@ void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
   GL_shadSUn_render ();    // disp shader surfaces with normals
 //   // GL_rend_SUi ();    // shader surfaces with normals and indices
 //   // GL_rend_SUt ();    // surfaces with normals texture-uv and indices (quads)
-  GL_shadCV_render ();     // disp point/curves (polygons)
+  GL_shCV_render ();     // disp point/curves (polygons)
   GL_shSY2_render ();    // disp dynamic-objects
   GLBT_render ();          // disp screen-buttons
 

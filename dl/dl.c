@@ -35,9 +35,6 @@ List_functions_end:
 #include <stdarg.h>                    // va_list va_arg
 #include <math.h>
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // Typ_GL_Sur
-#include "../ut/ut.h"                      // ICHG01
 #include "../ut/geo.h"                     // Point ..
 #include "../gr/gr.h"                      // Att_ln ColRGB
 

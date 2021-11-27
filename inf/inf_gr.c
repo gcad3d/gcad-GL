@@ -103,9 +103,37 @@ AP_obj_add_perm
 
 AP_obj_add_dyn
   GR_dyn_sym2
-    DLdyn_add__
+    DL_SYD_add__
 
 AP_obj_add_temp            TODO
+
+
+//----------------------------------------------------------------
+Display:
+
+Gtk_CB_realize      // grafic-win is up
+  GL_init
+    GUI_CB_win_is_up
+      AP_CB_win_is_up
+        GR_modsiz_set
+
+Gtk_CB_resize       // resize window
+  GR_resize           // 
+    GL_view_ortho
+  GL_viewport         // glViewport
+    glViewport
+
+Gtk_CB_motion      // move objects with mouse
+  GR_do_pan          // get center of window as rotation-center
+    GR_view_cen_set
+
+Gtk_CB_motion      // rotate objects with mouse
+  GR_do_rot          // get new rotation-angle (Z-angle, tilt-angle)
+
+Gtk_CB_scroll      // zoom objects
+
+GL_view_update     // update view after GR_do_pan, GR_do_rot, GR_resize
+
 
 
 //----------------------------------------------------------------
@@ -113,7 +141,7 @@ Redraw:
 GR_redraw
   GL_render__
     GL_shadSUn_render        // disp shader surfaces with normals
-    GL_shadCV_render ();     // disp point/curves (polygons)
+    GL_shCV_render ();     // disp point/curves (polygons)
     GL_shSY2_render ();      // disp dynamic-objects
     GL_shSY2_axis ();        // display axis-systems
 

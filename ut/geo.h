@@ -1,31 +1,50 @@
 /*   ./geo.h
 static include in application/main
-Functions ../ut/ut3d.c
+Functions ../ut/ut3d.c ../ut/ut2d.c
 */
 
-#include "./tol.h" 
 
+#include "../ut/ut_types.h"               // INT_8 - UINT_64
+#include "../ut/types.h"                  // Typ_PT ..
+#include "../ut/ut.h"                     // UTI UTP BIT I* D*
+#include "../ut/mem.h"                    // MEM_*
+#include "../ut/tol.h"                    // UT_TOL_..
+#include "../ut/TX_.h"                    // TX_Print ..
 
 
 //================================================================
 
-/// 2D-vector, Typ_VC2
-typedef struct {double dx, dy;}                                     Vector2;
+// 2D-point, Typ_PT2
+typedef struct {double x, y;}                                       Point2;
 // size = 16
 
 // 3D-point, Typ_PT
 typedef struct {double x, y, z;}                                    Point;
 // size = 24
 
+typedef struct {float x, y, z;}                                     Pointf;
+
+// 2D-vector, Typ_VC2
+typedef struct {double dx, dy;}                                     Vector2;
+// size = 16
+
 // 3D-vector, Typ_VC
 typedef struct {double dx, dy, dz;}                                 Vector;
 // size = 24
+
+typedef struct {float dx, dy, dz;}                                  Vectorf;
 
 // 3D-position+vector, Typ_PVC
 typedef struct {Point pos; Vector vc;}                              VecPos;
 // size = 24
 
 
+// 2D-line, Typ_LN2
+typedef struct {Point2 p1, p2; char typ;}                           Line2;
+//  typ      0  both sides limited                               -
+//           1  1 side limited  (p1 is startpoint, p2 unlimited) UNL1
+//           2  1 side limited  (p2 is startpoint, p1 unlimited) UNL2
+//           3  both sides unlimited                             UNL
 
 
 // 3D-plane, Typ_PLN
@@ -37,6 +56,53 @@ typedef struct {Point po; Vector vx, vy, vz; double p;}             Plane;
 
 typedef double Mat_4x4D[4][4];            // Typ_M4x4D
 typedef float  Mat_4x4F[4][4];            // Typ_M4x4F
+
+
+// text or image or label; Typ_ATXT, Typ_Tag ..
+// p1   Textblock-/Imageposition (left middle)
+// p2   Startpoint leaderline
+// scl  Scale (for Image)
+// typ  0=Text, 1=Image, 2=Label-Block, 3=Label-Kreis  4=PointCoord
+//      5=Symbol SYM_STAR_S (Stern klein) 6=Symbol SYM_TRI_S (Dreieck klein)
+//      7=Symbol SYM_CIR_S (Kreis klein)  8=SYM_TRI_B (Viereck)
+//      9=Vector (normalized)            10=Vector (true length)
+// col  Farbe fuer Label; -1=kein Label
+// ltyp Linetyp Leaderline; -1=no Leaderline.
+// txt  Text/ImageFilename
+typedef struct {Point p1, p2; char *txt;
+                float scl; char typ, col, ltyp;}                    AText;
+
+
+// grafic text; Typ_GTXT
+// dir          direction in degree
+// size         textsize-in-mm; 0=2D-text
+typedef struct {Point pt; float size, dir; char *txt;}              GText;
+
+
+// dimension; Typ_Dimen
+// p1    dimensionpoint 1
+// p2    dimensionpoint 2
+// p3    textpoint
+// dtyp: 0=linear 1=diameter 2=radius 3=angle 21=leader
+// hd:   heads: 0=none, 1=<, 2=>, 3=/, 4=X; Default is 12.
+// ld    lines: 0=none, 1=line; Default is 11.
+// a1    angle (linear:textline; angle: line1; leader:text)
+// a2    angle (angle: line2)
+typedef struct {Point2 p1, p2, p3; float a1, a2;
+                char dtyp, hd, ld, uu; char *txt;}                  Dimen;
+
+
+
+// 2D-symbol; Typ_SymRef2 Typ_SymB Typ_SymV
+// ang        angle in rad
+typedef struct {Point2 pt; float ang, scl; int typ;}                SymRef2;
+// GL_DrawSymV2
+
+
+
+// 3D-symbol; Typ_SymRef
+typedef struct {Point pt; Vector dx, dy; float scl; int typ;}       SymRef;
+// GL_DrawSymV3
 
 
 //----------------------------------------------------------------
@@ -122,21 +188,31 @@ extern Mat_4x4F MAT_4x4F_NUL;
 
 
 //================================================================
+int UT2D_sidPerp_ptvc (Point2 *pt,  Point2 *pl, Vector2 *vl);
+
 double UT2D_len_vc (Vector2 *);
 double UT2D_angr_vc (Vector2 *vc);
+void   UT2D_vc_2pt (Vector2 *, Point2 *, Point2 *);
 void UT2D_vc_setLength (Vector2 *vco, Vector2 *vci, double new_len);
 
+int    UT2D_comp2pt (Point2*, Point2*, double);
+double UT2D_len_2pt (Point2 *,Point2 *);
+void   UT2D_pt_traptvc (Point2 *, Point2 *, Vector2 *);
+Point2 UT2D_pt_pt3 (Point *);
+int UT2D_pt_projptptvc (Point2 *pp, Point2 *pt, Point2 *pl, Vector2 *vl);
+void   UT2D_pt_traptvclen (Point2 *,Point2 *,Vector2 *,double);
+
 //----------------------------------------------------------------
+void UT3D_angrZX_vc (double *angrZ, double *angrX, Vector *vc);
+
+int UT3D_comp2vc_d (Vector *v1, Vector *v2, double tol);
 double UT3D_len_vc (Vector *);
 int UT3D_2angr_vc__ (double *az, double *ay, Vector *vc1);
-void UT3D_angrZX_vc (double *angrZ, double *angrX, Vector *vc);
 
 void UT3D_pt_3db (Point *pt, double px, double py, double pz);
 void UT3D_pt_traptvc (Point*, Point*, Vector*);
 int UT3D_ptDi_intptvcpln (Point *ip, double *dist,
                           Plane *pl, Point *pt, Vector *vln);
-int UT3D_comp2vc_d (Vector *v1, Vector *v2, double tol);
-
 void   UT3D_vc_invert (Vector*, Vector*);
 void UT3D_vc_setLength (Vector *vco, Vector *vci, double new_len);
 void UT3D_vc_3db (Vector *vc, double x, double y, double z);
@@ -169,6 +245,37 @@ double UT_DEGREES (double);
 #define UT2D_len_vc(vc) (sqrt((vc)->dx * (vc)->dx + (vc)->dy * (vc)->dy))
 
 
+// UT2D_vc_angr            2DVector =  angle (radians)
+#define UT2D_vc_angr(vc,angr){\
+  (vc)->dx = cos(angr);\
+  (vc)->dy = sin(angr);}
+
+
+// UT2D_comp2pt              compare 2 points
+// RC = 0: points not identical; distance > tolerance
+// RC = 1: points are identical; distance < tolerance
+#define UT2D_comp2pt(p1,p2,tol)\
+  ((fabs((p2)->x - (p1)->x) < tol) &&\
+   (fabs((p2)->y - (p1)->y) < tol))
+
+
+// UT2D_vc_2pt               2D-Vector = 2D-Point -> 2D-Point
+#define UT2D_vc_2pt(vc,p1,p2){\
+ (vc)->dx = (p2)->x - (p1)->x;\
+ (vc)->dy = (p2)->y - (p1)->y;;}
+
+
+
+// UT2D_pt_pt3               2D-Point = 3D-Point (cut off z-coord)
+#define UT2D_pt_pt3(pt3)\
+  (*(Point2*)pt3)
+
+// UT2D_pt_traptvc               2D Point = Point + Vector
+#define UT2D_pt_traptvc(po,pi,vc){\
+ (po)->x = (pi)->x + (vc)->dx;\
+ (po)->y = (pi)->y + (vc)->dy;}
+
+
 //----------------------------------------------------------------
 /// UT3D_len_vc          length of 3D-vector
 #define UT3D_len_vc(vc)\
@@ -194,6 +301,13 @@ double UT_DEGREES (double);
  (vc)->dx = (x);\
  (vc)->dy = (y);\
  (vc)->dz = (z);}
+
+/// UT3D_vc_2pt               Vector = Point -> Point
+#define UT3D_vc_2pt(vc,p1,p2){\
+ (vc)->dx = (p2)->x - (p1)->x;\
+ (vc)->dy = (p2)->y - (p1)->y;\
+ (vc)->dz = (p2)->z - (p1)->z;}
+
 
 /// UT3D_vc_invert            invert Vector
 #define UT3D_vc_invert(vio,vii){\

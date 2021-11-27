@@ -11,8 +11,12 @@ geometric computations 2D
 =====================================================
 List_functions_start:
 
-UT2D_angr_vc              get angle (radians) from vector (0-2Pi)
-UT2D_vc_setLength         change 2D-Vectorlength
+UT2D_sidPerp_ptvc        compare if pt is right/on/left of a normal to pl+vc
+UT2D_angr_vc             get angle (radians) from vector (0-2Pi)
+UT2D_vc_setLength        change 2D-Vectorlength
+
+UT2D_pt_traptvclen       move pi along vc length lenv
+UT2D_pt_projptptvc       point = project point to line (pt+vc)
 
 List_functions_end:
 =====================================================
@@ -31,9 +35,77 @@ List_functions_end:
 #include <string.h>
 
 
-#include "../ut/ut.h"                      // TX_Error
 #include "../ut/geo.h"                     // Point ..
 
+
+
+//========================================================================
+  void UT2D_pt_traptvclen (Point2 *po,Point2 *pi,Vector2 *vc,double lenv) {
+//========================================================================
+// UT2D_pt_traptvclen    move pi along vc length lenv
+
+  double    l1, lvc;
+
+
+  lvc = UT2D_len_vc (vc);
+  if(lvc < UT_TOL_min2) {
+    *po = *pi;
+    return;
+  }
+
+  l1 = lenv / lvc;
+
+  po->x = pi->x + vc->dx * l1;
+  po->y = pi->y + vc->dy * l1;
+
+  /* printf("UT2D_pt_traptvclen %f %f\n",po->x,po->y); */
+  /* printf("          pt in %f %f\n",pi->x,pi->y); */
+  /* printf("          vc %f %f  - len %f\n",vc->dx,vc->dy,lenv); */
+
+}
+
+
+//======================================================================
+  int UT2D_sidPerp_ptvc (Point2 *pt,  Point2 *pl, Vector2 *vl) {
+//======================================================================
+// UT2D_sidPerp_ptvc        compare if pt is right/on/left of a normal to pl+vc
+//
+//              
+//   pt      |           pt
+//   -1      |           1
+//           |  
+//           |--------->vl
+// ----------X----------------
+//           pl
+//           |
+//
+// retcode:
+//   0   pt is on a normal to line pl-vl
+//   1   pt is before pl (to the right side of a normal to line pl-vl)
+//  -1   pt is behind pl (to the left side of a normal to line pl-vl)
+
+
+  int      rc;
+  double   d1;
+  Vector2  vp;
+
+  /* ------------------------------------------------------------------- */
+  // UT2D_vc_invert (&vn, vl);
+
+  UT2D_vc_2pt (&vp, pl, pt);
+
+  d1 = vp.dx * vl->dx + vp.dy * vl->dy;
+
+  rc = DSIGTOL (d1, UT_TOL_min2);         // 2017-10-04 was UT_TOL_min0
+
+  // if (UTP_comp_0 (d1)) rc =  0;
+  // else if (d1 < 0.)    rc = -1;
+  // else                 rc =  1;
+  // printf("UT2D_sidPerp_ptvc %d %f\n",rc,d1);
+
+  return rc;
+
+}
 
 
 //====================================================================
@@ -128,6 +200,82 @@ void UT2D_vc_setLength (Vector2 *vco, Vector2 *vci, double new_len) {
   /* printf("UT2D_angr_vc %f %f\n",angr, angr/RAD_1); */
 
   return angr;
+}
+
+
+//====================================================================
+  double UT2D_len_2pt (Point2 *p1,Point2 *p2) {
+//====================================================================
+// UT2D_len_2pt              distance pt - pt
+
+  double dx, dy;
+
+  dx = p2->x - p1->x;
+  dy = p2->y - p1->y;
+
+  // printf("UT2D_len_2pt dx=%f dy=%f\n",dx,dy);
+
+
+  return (sqrt(dx*dx + dy*dy));
+
+}
+
+
+//================================================================
+  int UT2D_pt_projptptvc (Point2 *pp, Point2 *pt, Point2 *pl, Vector2 *vl) {
+//================================================================
+// UT2D_pt_projptptvc        point = project point to line (pt+vc)
+// Project a point onto a line given by point and vector.
+// pl - vl gives a line, pt is projected onto this line.
+//
+// IN:
+//   Point2 *pt   ... point to project on line pl-vl
+//   Point2 *pl   ... point on line
+//   Vector2 *vl  ... vector of line
+// OUT:
+//   Point2 *pp   ... normal projection of pt onto line
+// Returncodes:
+//   0 = OK
+//   1 = point is on line
+
+
+   double  sprod,lenl;
+   Vector2 vp;
+
+
+  /* change linstartpoint > ext.point into vector vp */
+  UT2D_vc_2pt (&vp, pl, pt);
+
+  /* length of Line */
+  lenl = UT2D_len_vc (vl);
+
+  /* wenn lenl==0 dann pp=pt */
+  if(lenl < UT_TOL_min2) {
+    *pp = *pt;
+    return 1;
+  }
+
+  /* Project vp on vl. */
+  sprod = (vl->dx*vp.dx + vl->dy*vp.dy) / lenl;
+
+  /* printf(" %f %f\n",lenl,sprod); */
+
+  /* compute prjPt on vector */
+  sprod /= lenl;
+  vp.dx = vl->dx * sprod;
+  vp.dy = vl->dy * sprod;
+
+  UT2D_pt_traptvc (pp, pl, &vp);
+
+
+  /* printf("UT2D_pt_projptptvc %f %f\n",pp->x,pp->y); */
+  /* printf("      pt %f %f\n",pt->x,pt->y); */
+  /* printf("      pl %f %f\n",pl->x,pl->y); */
+  /* printf("      vl %f %f\n",vl->dx,vl->dy); */
+
+  return UT2D_comp2pt(pt, pp, UT_TOL_pt);
+  // return UT2D_comp2pt(pt, pp, UT_TOL_min1);
+
 }
 
 

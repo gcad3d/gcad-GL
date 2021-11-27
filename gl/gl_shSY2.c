@@ -39,19 +39,16 @@ See INF_symbols
 
 #include <GL/gl.h>
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // Typ_PT ..
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
+#include "../ut/deb.h"                     // DEB_dump_..
 #include "../ut/matrix.h"
 #include "../gr/gr.h"                      // Att_ln GR_..
 #include "../gl/gl.h"                      // sh*
 #include "../dl/dl.h"                      // DL_..
-#include "../dl/dl_dyn.h"                  // DLdyn..
+#include "../dl/dl_sym_dyn.h"                  // DLdyn..
 #include "../gr/col.h"                     // Att_4f_att
 #include "../app/app.h"                    // Typ_*
 #include "../gl/gl_font1.h"                // GL_vfont1 SIZ_FONT_DAT
-#include "../ut/ut.h"                      // TX_Error
-#include "../app/deb.h"                     // DEB_dump_..
 
 #define extern  // does eliminate "extern"
 #include "../gl/gl_shSY2.h"              // 
@@ -234,23 +231,32 @@ void main() {\
 
 
   //----------------------------------------------------------------
+  // add iSym_pt - point
+  iSym_pt = *iSym;
+  fa[ 0]=0.f;  fa[ 1]=0.f;  fa[ 2]=0.f;
+  bNr = 3 * sizeof(float);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_POINTS, 1);
+  if(irc < 0) goto L_exit;
+
+
+  //----------------------------------------------------------------
   // add iSym_vcx = line length 1 =  VC_X;
   iSym_vcx = *iSym;
   fa[ 0]=0.f;  fa[ 1]=0.f;  fa[ 2]=0.f;
   fa[ 3]=1.f;  fa[ 4]=0.f;  fa[ 5]=0.f;
 
   bNr = 6 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 2);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINES, 2);
   if(irc < 0) goto L_exit;
 
 
   //----------------------------------------------------------------
-  // add iSym_vcx = line length 1 =  VC_Y;
+  // add iSym_vcy = line length 1 =  VC_Y;
   iSym_vcy = *iSym;
   fa[ 3]=0.f;  fa[ 4]=1.f;  fa[ 5]=0.f;
 
   bNr = 6 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 2);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINES, 2);
   if(irc < 0) goto L_exit;
 
 
@@ -260,7 +266,7 @@ void main() {\
   fa[ 3]=0.f;  fa[ 4]=0.f;  fa[ 5]=1.f;
 
   bNr = 6 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 2);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINES, 2);
   if(irc < 0) goto L_exit;
 
 
@@ -276,7 +282,7 @@ void main() {\
   fa[ 9]=0.f;  fa[10]=d1;   fa[11]=0.f;
 
   bNr = 12 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 4);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINE_LOOP, 4);
   if(irc < 0) goto L_exit;
 
 
@@ -293,7 +299,7 @@ void main() {\
   fa[ 9]=-d2;  fa[10]=d2;   fa[11]=0.f;
 
   bNr = 12 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 4);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINE_LOOP, 4);
   if(irc < 0) goto L_exit;
 
 
@@ -320,7 +326,7 @@ void main() {\
   fa[ 9]=-d3;  fa[10]=-d2;  fa[11]=0.f;
 
   bNr = 12 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 4);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINE_STRIP, 4);
   if(irc < 0) goto L_exit;
 
 
@@ -352,7 +358,7 @@ void main() {\
   fa[15]=d2;   fa[16]=d4;   fa[17]=0.f;
 
   bNr = 18 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 6);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINES, 6);
   if(irc < 0) goto L_exit;
 
 
@@ -368,7 +374,7 @@ void main() {\
   fa[ 6]=d1;   fa[ 7]=d2;   fa[ 8]=0.f;  // p1
 
   bNr = 9 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 3);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINE_STRIP, 3);
   if(irc < 0) goto L_exit;
 
 
@@ -390,7 +396,7 @@ void main() {\
   fa[18]=d1;   fa[19]=0.f;  fa[20]=0.f;  // 7 p1
 
   bNr = 21 * sizeof(float);
-  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, 7);
+  irc = GL_shSY2_add_sym (iSym, bNr, iOff, fa, GL_LINE_STRIP, 7);
   if(irc < 0) goto L_exit;
 
 
@@ -405,7 +411,8 @@ void main() {\
 
 
 //=======================================================================
-  int GL_shSY2_add_sym (int *iSym, int bNr, int *iOff, void *cvDat, int oNr) {
+  int GL_shSY2_add_sym (int *iSym, int bNr, int *iOff, void *cvDat,
+                        int lTyp, int oNr) {
 //=======================================================================
 // add a data-record (symbol of fontChar) into buffer
 // Input:
@@ -414,7 +421,7 @@ void main() {\
   int iOff2;
 
 
-  printf("GL_shSY2_add_sym *iSym=%d bNr=%d iOff=%d oNr=%d\n",*iSym,bNr,*iOff,oNr);
+  // printf("GL_shSY2_add_sym *iSym=%d bNr=%d iOff=%d oNr=%d\n",*iSym,bNr,*iOff,oNr);
 
  
   // check for buffer overflow
@@ -432,6 +439,7 @@ void main() {\
 
   // store bufferOffset (in bytes), lineNr per char
   symTab[*iSym].iOff = *iOff;
+  symTab[*iSym].lTyp = lTyp;
   symTab[*iSym].oNr  = oNr;
     // printf(" load_font1-chr '%c' %d iOff=%d lNr=%d\n",i1+32,i1,iOff1,oNr);
 
@@ -461,16 +469,17 @@ void main() {\
   float    fCol[4], scale;
   double   d1, d2, d3;
   Att_ln   actAtt, iatt;
-  Point    pt1, pt2;
+  Point    pt0, pt1, pt2, pt3;
+  Vector   vc1;
   float pos1[3], pos2[3];
   Mat_4x4D mx3D[10], mdm;
   Mat_4x4F mx2F, mx3F;
 
 
-  printf("GL_shSY2_render idPrg=%d DLdyn_nr=%d\n",shSY2.idPrg,DLdyn_nr);
-  if(!DLdyn_nr) DLdyn_dump ();
+  printf("GL_shSY2_render idPrg=%d DL_SYD_nr=%d\n",shSY2.idPrg,DL_SYD_nr);
+  if(!DL_SYD_nr) DL_SYD_dump ();
 
-  if(!DLdyn_nr) return;
+  if(!DL_SYD_nr) return;
 
   //----------------------------------------------------------------
   glEnable (GL_LINE_SMOOTH);
@@ -501,15 +510,15 @@ void main() {\
   // loop tru all objs in this buffer
   actAtt = Att_ln_NUL;
 
-  for(i1=0; i1<DLdyn_nr; ++i1) {
-    iSym = DLdyn[i1].oTyp;
+  for(i1=0; i1<DL_SYD_nr; ++i1) {
+    iSym = DL_SYD_tab[i1].oTyp;
       printf(" rend_SY2----- %d iSym=%d\n",i1,iSym);
 
 
     // export width, color
-    if(memcmp(&actAtt, &DLdyn[i1].iatt, sizeof(UINT_32))) {
+    if(memcmp(&actAtt, &DL_SYD_tab[i1].iatt, sizeof(UINT_32))) {
       // activate modified width or color
-      iatt = *(Att_ln*)&DLdyn[i1].iatt;
+      iatt = *(Att_ln*)&DL_SYD_tab[i1].iatt;
         // Att_dump (&iatt, " SY2_render-att");
       // glPointSize ((float)iatt.thick * 2.f);
       glLineWidth ((float)iatt.thick);
@@ -518,7 +527,7 @@ void main() {\
     }
 
 
-    scale = DLdyn[i1].size;
+    scale = DL_SYD_tab[i1].size;
         printf(" rend_SY2-siz=%f aZ=%f aX=%f\n",scale,GR_angZ,GR_angX);
 
 
@@ -530,49 +539,61 @@ void main() {\
 
       // set and export matrix;
       if(scale != 0.f) {
-        // normalized-length
+        // vector normalized-length
+        // display line iSym_vcx scaled, translated, tilted, rotated
 
-        // get pt1 = startposition in device-coords from world-coords
-        M44D_pt_mult_m44 (&pt1, GR_matd_view, &DLdyn[i1].pos);
-        // set as offset for 2D-matrix
-        pos1[0] = pt1.x; pos1[1] = pt1.y; pos1[2] = pt1.z;
-          // DEB_dump_pt (&pt1, "  rend_SY2-pos");
-        glUniform3fv (shSY2.ulOff, 1, pos1); // export offsets 
-  
-        // set matrix - scale to always same size
-        d1 = scale / GR_Scale * 5.2; // GR_sizX_mm_ndc * scale;
-          printf(" rend_SY2-scale %f %f %f \n",d1,scale,GR_Scale);
-        M44D_scale__ ((void*)mx3D[1], d1, d1, d1);          // scale 
-        memcpy (mx3D[2], GR_matd_mdl[2], sizeof(Mat_4x4D)); // GR_angZ = around Z
-        memcpy (mx3D[3], GR_matd_mdl[3], sizeof(Mat_4x4D)); // GR_angX = around X
-        M44D_mult_n (mx3D[0], 3, &mx3D[1]);
-        M44D_mult__ (mx3D[4], GR_matd_scl, mx3D[0]); // deviceCoords from userCoords
+        // export offsets 
+        glUniform3f (shSY2.ulOff, 0.f, 0.f, 0.f);
 
-        // get pt2 = endPt of normalized vec - relative to startPt
-        M44D_pt_mult_m44 (&pt2, mx3D[0], &DLdyn[i1+1].pos);
-          printf(" rend_SY2-pt2=%f %f %f\n",pt2.x,pt2.y,pt2.z);
-        // add startPt
-        pt2.x += DLdyn[i1].pos.x;
-        pt2.y += DLdyn[i1].pos.y;
-        pt2.z += DLdyn[i1].pos.z;
+        // scale to constant length
+        d1 = scale / GR_Scale * 5.5;     // ??
+        M44D_scale__ ((void*)mx3D[1], d1, d1, d1);     // scale 
+
+        // tilt
+        d1 = DL_SYD_tab[i1].ay;
+          printf(" shSY2_render-VecPos-az=%f ay=%f\n",d2,d1);
+        M44D_rot_Y (mx3D[3], d1);
+        M44D_mult__ (mx3D[5], mx3D[1], mx3D[3]);       // scal+tilt
+
+        // rot
+        d2 = DL_SYD_tab[i1].az + RAD_180;
+        M44D_rot_Z (mx3D[4], d2);
+        M44D_mult__ (mx3D[6], mx3D[4], mx3D[5]);       // +rot
+
+        // translate -> startposition of vector
+        // input = startPos of vec in WCS
+        pt0 = DL_SYD_tab[i1].pos;
+        M44D_transl_3 (mx3D[2], pt0.x, pt0.y, pt0.z);
+        M44D_mult__ (mx3D[7], mx3D[2], mx3D[6]);       // +transl
+
+// get pt2 = endPt vector
+pt1.x = 1.; pt1.y = 0.; pt1.z = 0.;
+M44D_pt_mult_m44 (&pt2, mx3D[7], &pt1);
+
+        // add ortho-view
+        M44D_mult__ (mx3D[8], GR_matd_view, mx3D[7]);
+
 
         // export matrix
-        M44FC__m44dr (mx3F, mx3D[4]);                // float from double
+        M44FC__m44dr (mx3F, mx3D[8]);
         glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mx3F);
+
+        // disp
+        glDrawArrays (symTab[iSym_vcx].lTyp,
+                      symTab[iSym_vcx].iOff / 12, symTab[iSym_vcx].oNr);
 
 
       } else {
-        // true-length
+        // vector true-length
         pos1[0] = 0.f; pos1[1] = 0.f; pos1[2] = 0.f;
         glUniform3fv (shSY2.ulOff, 1, pos1); // export offsets 
 
         // export matrix
         glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)GR_matf_dev);
 
+        // disp vector in sgSY2-buffer
+        glDrawArrays (DL_SYD_tab[i1].lTyp, DL_SYD_tab[i1].iOff / 12, DL_SYD_tab[i1].vtxNr);
       }
-
-      // disp vector in sgSY2-buffer
-      glDrawArrays (DLdyn[i1].lTyp, DLdyn[i1].iOff / 12, DLdyn[i1].vtxNr);
 
 
       //----------------------------------------------------------------
@@ -583,73 +604,66 @@ void main() {\
         // normalized-length
 
         // endPt vec = startPt arrowHead
-        // pos2[0] = pt2.x; pos2[1] = pt2.y; pos2[2] = pt2.z;
         pos2[0] = 0.f; pos2[1] = 0.f; pos2[2] = 0.f;
         glUniform3fv (shSY2.ulOff, 1, pos2); // export offsets 
 
-        // M44D_init (mx3D[0]);
-        // M44FC__m44dr (mx3F, mx3D[0]);
-        // glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mx3F);
+        // scale to constant length
+        d1 = 25. / GR_Scale;
+        M44D_scale__ ((void*)mx3D[1], d1, d1, d1);     // scale 
 
-        M44D_transl__ (mx3D[0], &pt2);  // translate -> endPt
-        M44D_rot_Y (mx3D[1], DLdyn[i1].ay);   // rotate tilt-angle around Y-axis
-        M44D_mult__ (mx3D[2], mx3D[0], mx3D[1]);
-        M44D_rot_Z (mx3D[3], DLdyn[i1].az);   // rotate around Z-axis
-        M44D_mult__ (mx3D[4], mx3D[2], mx3D[3]);
+        // tilt
+        M44D_rot_Y (mx3D[2], -DL_SYD_tab[i1].ay);
+        M44D_mult__ (mx3D[3], mx3D[1], mx3D[2]);  // scal+tilt
 
-        d1 =  25. / GR_Scale;                 // normalize arrowhead
-          printf(" rend_SY2-siz %f %f %f\n",DLdyn[i1].size,GR_Scale,d1);
-        M44D_scale__ ((void*)mx3D[5], d1, d1, d1);
-        M44D_mult__ (mx3D[6], mx3D[4], mx3D[5]);
+        // rotate around Z-axis
+        M44D_rot_Z (mx3D[4], DL_SYD_tab[i1].az);
+        M44D_mult__ (mx3D[5], mx3D[4], mx3D[3]);
 
-        memcpy (mx3D[0], GR_matd_view, sizeof(Mat_4x4D));
-        M44D_mult__ (mx3D[9], mx3D[0], mx3D[6]);
+        // translate -> endPt
+        M44D_transl__ (mx3D[6], &pt2);
+        M44D_mult__ (mx3D[7], mx3D[6], mx3D[5]);
 
-        M44FC__m44dr (mx3F, mx3D[9]);                // float from double
+        // add ortho-view
+        M44D_mult__ (mx3D[8], GR_matd_view, mx3D[7]);
+
+        // export matrix
+        M44FC__m44dr (mx3F, mx3D[8]);                // float from double
         glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mx3F);
-
 
 
       } else {
         // true-length
-        // get pt1 = endposition in device-coords from world-coords
-        M44D_pt_mult_m44 (&pt2, GR_matd_view, &DLdyn[i1].pos);
-
-
-        // get pt1 = endposition in device-coords from world-coords
-//         M44D_pt_mult_m44 (&pt1, GR_matd_view, &DLdyn[i1].pos);
-//         // set as offset for 2D-matrix
-//         pos2[0] = pt1.x; pos2[1] = pt1.y; pos2[2] = pt1.z;
         pos2[0] = 0.f; pos2[1] = 0.f; pos2[2] = 0.f;
         glUniform3fv (shSY2.ulOff, 1, pos2); // export offsets 
 
-
-          printf(" rend_SY2-aZ %f %f\n", UT_DEGREES(GR_angZ),
-                                         UT_DEGREES(DLdyn[i1].az));
-          printf(" rend_SY2-at %f %f\n", UT_DEGREES(GR_angX),
-                                         UT_DEGREES(DLdyn[i1].ay));
-
-        M44D_transl__ (mx3D[0], &DLdyn[i1].pos);  // translate -> endPt
-        M44D_rot_Y (mx3D[1], DLdyn[i1].ay);   // rotate tilt-angle around Y-axis
-        M44D_mult__ (mx3D[2], mx3D[0], mx3D[1]);
-        M44D_rot_Z (mx3D[3], DLdyn[i1].az);   // rotate around Z-axis
-        M44D_mult__ (mx3D[4], mx3D[2], mx3D[3]);
-
         d1 =  25. / GR_Scale;                 // normalize arrowhead
-          printf(" rend_SY2-siz %f %f %f\n",DLdyn[i1].size,GR_Scale,d1);
-        M44D_scale__ ((void*)mx3D[5], d1, d1, d1);
-        M44D_mult__ (mx3D[6], mx3D[4], mx3D[5]);
+        M44D_scale__ ((void*)mx3D[1], d1, d1, d1);
+        // M44D_mult__ (mx3D[6], mx3D[4], mx3D[5]);
 
-        memcpy (mx3D[0], GR_matd_view, sizeof(Mat_4x4D));
-        M44D_mult__ (mx3D[9], mx3D[0], mx3D[6]);
+        // tilt
+        M44D_rot_Y (mx3D[2], -DL_SYD_tab[i1].ay);  
+        M44D_mult__ (mx3D[3], mx3D[1], mx3D[2]);  // scal+tilt
 
-        M44FC__m44dr (mx3F, mx3D[9]);                // float from double
+        // rotate around Z-axis
+        M44D_rot_Z (mx3D[4], DL_SYD_tab[i1].az);
+        M44D_mult__ (mx3D[5], mx3D[4], mx3D[3]);
+
+        // translate -> endPt
+        M44D_transl__ (mx3D[6], &DL_SYD_tab[i1].pos);
+        M44D_mult__ (mx3D[7], mx3D[6], mx3D[5]);
+
+        // add ortho-view
+        M44D_mult__ (mx3D[8], GR_matd_view, mx3D[7]);
+
+        // export matrix
+        M44FC__m44dr (mx3F, mx3D[8]);                // float from double
         glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mx3F);
 
       }
 
       // disp symbol 3d-arrowhead
-      glDrawArrays (GL_LINE_STRIP, symTab[iSym_arh3].iOff / 12, symTab[iSym_arh3].oNr);
+      glDrawArrays (symTab[iSym_arh3].lTyp,
+                    symTab[iSym_arh3].iOff / 12, symTab[iSym_arh3].oNr);
 
       continue;
 
@@ -666,7 +680,7 @@ void main() {\
 //     glUniform3fv (shSY2.ulOff, 1, pos1);
 // 
 //     // display
-//     glDrawArrays (DLdyn[i1].lTyp, DLdyn[i1].iOff / 12, DLdyn[i1].vtxNr);
+//     glDrawArrays (DL_SYD_tab[i1].lTyp, DL_SYD_tab[i1].iOff / 12, DL_SYD_tab[i1].vtxNr);
 //     continue;
 
 
@@ -676,7 +690,7 @@ void main() {\
       // render symbol (SYM_TRIA, SYM_PLN, ..)
 
       // get pt1 = startposition in device-coords from world-coords
-      M44D_pt_mult_m44 (&pt1, GR_matd_view, &DLdyn[i1].pos);
+      M44D_pt_mult_m44 (&pt1, GR_matd_view, &DL_SYD_tab[i1].pos);
       // set as offset for 2D-matrix
       pos1[0] = pt1.x;
       pos1[1] = pt1.y;
@@ -685,22 +699,30 @@ void main() {\
       glUniform3fv (shSY2.ulOff, 1, pos1); // export offsets 
 
       // export matrix (scale)
-      d1 = GR_sizX_mm_ndc * DLdyn[i1].size;
-      d2 = GR_sizY_mm_ndc * DLdyn[i1].size;
+      d1 = GR_sizX_mm_ndc * DL_SYD_tab[i1].size;
+      d2 = GR_sizY_mm_ndc * DL_SYD_tab[i1].size;
       M44FC_scale__ ((void*)mx2F, d1, d2, -d1);
       glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mx2F);
 
           printf(" rend_SY2 %d sym=%d iOff=%d vtxNr=%d\n",i1,
                   iSym,symTab[iSym].iOff, symTab[iSym].oNr);
 
+
+      // points: set size
+      if(iSym == iSym_pt) {
+        glPointSize (DL_SYD_tab[i1].size);
+      }
+
       // display obj; startIndex = vertxIndex (12 bytes per vertex)
       //  (vertexType, startIndex, nr-vertices-to-render)
-      glDrawArrays (DLdyn[i1].lTyp, symTab[iSym].iOff / 12, symTab[iSym].oNr);
+      // glDrawArrays (DL_SYD_tab[i1].lTyp,
+      glDrawArrays (symTab[iSym].lTyp,
+                    symTab[iSym].iOff / 12, symTab[iSym].oNr);
 
   }
-  //================================================================
- 
 
+
+  //================================================================
   // close - disactivate
   glBindBuffer (GL_ARRAY_BUFFER, 0);
   glBindVertexArray (0);  // clear active buffer
@@ -770,9 +792,8 @@ void main() {\
 
   float    pos1[3] = {0.f, 0.f, 0.f}; //, scale, sclX, sclY;
   double   scale, sclX, sclY;
-  Mat_4x4D mxdv, mxdm;
-  Mat_4x4F m2D, mxt, mx2D, mxfv;
-  Att_ln   att1;
+  Mat_4x4D mxdv, mxds, mxdr;
+  Mat_4x4F mx2D, mxfv;
 
 
   printf("GL_shSY2_axis \n");
@@ -806,41 +827,38 @@ void main() {\
   glLineWidth ((float)1.8f);   // maximum is 10
 
   //----------------------------------------------------------------
+  // disp axes
   // set model-view-matrix
-  scale = 10.;
+  scale = 10.;    // size in mm
   sclX = GR_sizX_mm_ndc * scale;
   sclY = GR_sizY_mm_ndc * scale;
 
   // get scaling-matrix
-  M44D_scale__ (mxdv, sclX, sclY, 1.f);
+  M44D_scale__ (mxds, sclX, sclY, 1.f);
 
-  // get rot-matrix
-  M44D_mult__ (mxdm, GR_matd_mdl[3], GR_matd_mdl[2]);
-
-  // get complete matrix
-  M44D_mult__ (mxdv, mxdv, mxdm);
+  // get complete matrix (scale + rot + tilt)
+  M44D_mult__ (mxdv, mxds, GR_matd_mdl[5]);
 
   // double-row -> float-column
   M44FC__m44dr (mxfv, mxdv);
 
-  // export
-  glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mxfv);
-
   // set position = screenCenter in screenCoords
-  pos1[0] = 0.f; //GR_sizWinX_px / 2.f;
-  pos1[1] = 0.f; //GR_sizWinY_px / 2.f;
   glUniform3fv (shSY2.ulOff, 1, pos1);
 
   // provide color
   glUniform3fv (shSY2.ulAtt, 1, COL_RED);
 
+  // export matrix
+  glUniformMatrix4fv (shSY2.ulMvp, 1, GL_FALSE, (float*)mxfv);
+
   // display - 3 lines = 6 vertexes
-  glDrawArrays (GL_LINES, symTab[iSym_vcx].iOff / 12, 2);
-  glDrawArrays (GL_LINES, symTab[iSym_vcy].iOff / 12, 2);
-  glDrawArrays (GL_LINES, symTab[iSym_vcz].iOff / 12, 2);
+  glDrawArrays (symTab[iSym_vcx].lTyp, symTab[iSym_vcx].iOff / 12, 2);
+  glDrawArrays (symTab[iSym_vcx].lTyp, symTab[iSym_vcy].iOff / 12, 2);
+  glDrawArrays (symTab[iSym_vcx].lTyp, symTab[iSym_vcz].iOff / 12, 2);
 
 
   //----------------------------------------------------------------
+  // disp 'x' and 'z'
   // get 2D-matrix
   // get size of 1 char in device-coords (-1, to +1)
   sclX = GR_sizX_mm_ndc * GR_vf1SizXmm * GR_vf1SizScl;
@@ -864,8 +882,8 @@ void main() {\
   pos1[1] = pt2.y;
   glUniform3fv (shSY2.ulOff, 1, pos1);
 
-  int ic = 'x' - 32;
-  glDrawArrays (GL_LINES, symTab[ic].iOff / 12, symTab[ic].oNr * 2);
+  int ic = GL_ISYM_CHR('x');
+  glDrawArrays (symTab[ic].lTyp, symTab[ic].iOff / 12, symTab[ic].oNr);
 
 
   //............................
@@ -879,8 +897,9 @@ void main() {\
   pos1[1] = pt2.y; 
   glUniform3fv (shSY2.ulOff, 1, pos1);
 
-  ic = 'z' - 32;
-  glDrawArrays (GL_LINES, symTab[ic].iOff / 12, symTab[ic].oNr * 2);
+  // ic = 'z' - 32;
+  ic = GL_ISYM_CHR('z');
+  glDrawArrays (symTab[ic].lTyp, symTab[ic].iOff / 12, symTab[ic].oNr);
 
 
   //----------------------------------------------------------------
@@ -948,7 +967,7 @@ void main() {\
     }
 
     // add cvDat into buffer
-    irc = GL_shSY2_add_sym (iSym, bNr, &iOff1, cvDat, lNr);
+    irc = GL_shSY2_add_sym (iSym, bNr, &iOff1, cvDat, GL_LINES, lNr * 2);
     if(irc < 0) goto L_exit;
 
     // if(*iSym < ie) 
@@ -989,7 +1008,7 @@ void main() {\
   // float offP = 0.f;  // offset position
 
   for(int is=0; is<sl; ++is) {
-    ic = txt[is] - 32; // get index for next char
+    ic = GL_ISYM_CHR(txt[is]); // get index for next char
       // printf(" txt_2D-ic=%d '%c' iOff=%d lNr=%d\n",ic,ic+32,
              // symTab[ic].iOff,symTab[ic].oNr);
 
@@ -997,7 +1016,7 @@ void main() {\
     glUniform3fv (shSY2.ulOff, 1, pos1);
 
     // do shSY2
-    glDrawArrays (GL_LINES, symTab[ic].iOff / 12, symTab[ic].oNr * 2);
+    glDrawArrays (symTab[ic].lTyp, symTab[ic].iOff / 12, symTab[ic].oNr);
 
     pos1[0] += offC;
   }

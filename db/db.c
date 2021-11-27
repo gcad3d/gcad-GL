@@ -15,7 +15,9 @@ DB_init           init DB__, DB_tab
 DB_get_free       returns next free index
 DB_bSav           store binary-data
 
+
 DB_add__          add geom. obj into DB
+DB_GetVar         get value variable;          DUMMY
 
 List_functions_end:
 =====================================================
@@ -36,10 +38,7 @@ TODO: reset with DB_nr-in
 #include <string.h>
 #include <math.h>
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // application-types
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
-#include "../ut/ut.h"                      // TX_Error
 #include "../db/db.h"                      // DB_..
 #include "../gr/gr.h"                      // ColRGB
 #include "../app/app.h"               // AP_OBJ_ID
@@ -61,6 +60,7 @@ static int ivc = 0;
 static int ipt = 0;
 static int icv = 0;
 static int isu = 0;
+static int ino = 0;  // dbi Note dummy
 
 static char   *DB__ = NULL;
 static int     DB__nr = 0;         // nr stored bytes in DB__
@@ -125,6 +125,11 @@ static int     DB_tab_tot = 0;     // nr allocated records in DB_tab
   } else if(typ == Typ_SUR) {
     ++isu;
     return isu;
+
+  } else if(typ == Typ_Note) {
+    ++ino;
+    return ino;
+
   }
 
   return -1;
@@ -188,6 +193,19 @@ static int     DB_tab_tot = 0;     // nr allocated records in DB_tab
 
 }
  
+
+
+
+//==============================================================
+  double DB_GetVar (long Ind) {
+//==============================================================
+// DB_GetVar    get value variable; DUMMY
+  static double d1 = 12.34;
+
+  return d1;
+
+}
+
 
 // EOF
 

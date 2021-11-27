@@ -68,14 +68,12 @@ List_functions_end:
 #include <gtk/gtk.h>
 
 
-#include "../ut/ut_types.h"                // UINT_32
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
 #include "../gr/gr.h"                      // GR_sizWinX_px ..
 #include "../gl/gl.h"
 #include "../ut/matrix.h"
 #include "../gui/gui.h"                     // GUI_CB_key
 #include "../ut/os.h"                      // OS_checkFilExist
-#include "../ut/ut.h"                      // TX_Write
 #include "../app/app.h"               // Typ_* GUI_CB_key
 
 
@@ -164,6 +162,8 @@ static gboolean Gtk_CB_render (GtkGLArea *area, GdkGLContext *context) {
 
   printf("=================== Gtk_CB_render \n");
 
+  if(GR_render_skip) { GR_render_skip = 0; return TRUE; }
+
   if (gtk_gl_area_get_error (area) != NULL) return FALSE;
 
   // block keystrokes & grafic_selections; activate wait-cursor;
@@ -193,7 +193,7 @@ static gboolean Gtk_CB_motion (GtkWidget *widget, GdkEventMotion *event) {
 
 
 
-  printf(" Gtk_CB_motion %f %f keyShift=%d\n",event->x,event->y,KeyStatShift);
+  // printf(" Gtk_CB_motion %f %f keyShift=%d\n",event->x,event->y,KeyStatShift);
 
 
 
@@ -580,7 +580,11 @@ static void Gtk_CB_quit (GtkGLArea *area, GdkEvent *ev, void *data) {
 
   gtk_widget_set_size_request(gl_area, GR_sizWinX_px, GR_sizWinY_px);
   gtk_widget_set_can_focus (gl_area, TRUE);  // else no keyb-callback
+  gtk_gl_area_set_has_depth_buffer (GTK_GL_AREA(gl_area), TRUE);
+  gtk_gl_area_set_auto_render (GTK_GL_AREA(gl_area), FALSE);
+
   gtk_box_pack_start (GTK_BOX(box1), gl_area, 1, 1, 0);
+
 
 
   gtk_widget_set_events(gl_area,
@@ -620,6 +624,10 @@ static void Gtk_CB_quit (GtkGLArea *area, GdkEvent *ev, void *data) {
                     G_CALLBACK(Gtk_CB_key),    NULL);
 
   gtk_widget_show_all (window);
+
+
+  // disp GL-version
+  GL_InitInfo ();
 
 
   // start main loop, continue with Gtk_CB_realize

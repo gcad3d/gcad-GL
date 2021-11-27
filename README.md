@@ -138,12 +138,13 @@ For using see Help-file using.txt and console-output
 
 #### Already working:
 - orthographic projection with zoom, pan, rotate
-- create points, curves, triangles, 2D-buttons
+- create points, curves, triangles, vectors, 2D-buttons
 - change colors, width of curves, points
 - hide / redisplay objects
 
 
 #### History:
+2021-11-26  V-0.04 vectors - true-length, normalized
 2021-10-11  dynamic-symbols, directory-structure, cursors, blocking ..
 2021-09-10  First release.
 

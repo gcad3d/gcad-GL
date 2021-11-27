@@ -114,6 +114,7 @@ extern Plane  GR_constrPln;       // the active construction-plane
 extern ColRGB defCol;             // default-color
 extern Att_ln defAtt;             // default-linetyp
 
+extern int    GR_render_skip;     // 0=do-render; 1=skip-next-render;
 
 Vector GR_eyeX;  // vector parallel to horizontal windowBorder (WCS)
 Vector GR_eyeY;  // vector parallel to vertical windowBorder (WCS)
@@ -145,7 +146,18 @@ int GR_perm_pt (double *ptPos, Att_ln iatt, int objId, int dbi);
 int GR_perm_cv (double *cvDat, int ptNr, Att_ln iatt, int objId, int dbi);
 int GR_perm_sur (double *surDat, int ptNr, int typ, ColRGB color,
                  int objId, int dbi);
+int GR_perm_Note (Dimen *dim1, int oNr, int typ, void *iatt, int objID, int dbi);
+int GR_perm_GTxt (GText *tx1, int oNr, int typ, void *iatt, int objID, int dbi);
 int GR_perm_txtA (double fPos[], char *txt, Att_ln iatt, int dbi);
+
+int GR_dim_lin__ (Line2 *ll1, Line2 *ll2, Line2 *lnd,
+                    SymRef2 *hd1, SymRef2 *hd2, Vector2 *vct,
+                    double *dval, char *outText,
+                    Dimen *dim1);
+
+
+int GR_gxt_prep1 (char *txo, double d1);
+
 int GR_resize ();
 int GR_redraw ();
 int GR_dump ();

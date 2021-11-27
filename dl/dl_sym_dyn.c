@@ -1,4 +1,4 @@
-/* ./dl_dyn.c
+/* ./dl_sym_dyn.c
 //================================================================
 Copyright 2021 Thomas Backmeister, Franz Reiter, Karl Sauer - support@gcad3d.org
 
@@ -12,9 +12,9 @@ Displaylist dynamic objects; manage all attributes
 =====================================================
 List_functions_start:
 
-DLdyn_init__
-DLdyn_add__          add new dynamic-DL-record
-DLdyn_dump
+DL_SYD_init__
+DL_SYD_add__          add new dynamic-DL-record
+DL_SYD_dump
 
 List_functions_end:
 =====================================================
@@ -41,7 +41,7 @@ List_functions_end:
 #include "../ut/deb.h"                     // DEB_dump_..
 
 #define extern  // does eliminate "extern" in includefile
-#include "../dl/dl_dyn.h"
+#include "../dl/dl_sym_dyn.h"
 #undef extern
 
 #include "../app/app.h"                 // Typ_*
@@ -49,93 +49,93 @@ List_functions_end:
 
 
 //================================================================
-  int DLdyn_init__ () {
+  int DL_SYD_init__ () {
 //================================================================
 
   int   iSiz;
 
   // get space for DisplayList
-  DLdyn_siz = 1000;
-  iSiz = DLdyn_siz * sizeof(DLdynrec);
+  DL_SYD_siz = 1000;
+  iSiz = DL_SYD_siz * sizeof(DL_SYD_rec);
 
-  printf("DL_init__ -------- %d\n",iSiz);
+  printf("DL_SYD_init__ -------- %d\n",iSiz);
 
-  DLdyn = (DLdynrec*) malloc (iSiz);
-  DLdyn_nr = 0;
+  DL_SYD_tab = (DL_SYD_rec*) malloc (iSiz);
+  DL_SYD_nr = 0;
 
 }
 
 
 //=======================================================================
-  int DLdyn_add__ (int typ, void *data, float size, void *att) {
+  int DL_SYD_add__ (int typ, void *data, float size, void *att) {
 //=======================================================================
-// DLdyn_add__      add new dynamic-DL-record
+// DL_SYD_add__      add new dynamic-DL-record
 
   int     irc = 0;
 
-  printf("DLdyn_add__ DL_nr=%d typ=%d size=%f\n",DLdyn_nr,typ,size);
+  printf("DL_SYD_add__ DL_nr=%d typ=%d size=%f\n",DL_SYD_nr,typ,size);
 
   switch (typ) {
 
     case SYM_PT:
-      DLdyn[DLdyn_nr].oTyp = iSym_pt;
-      DLdyn[DLdyn_nr].lTyp = GL_POINTS;
+      DL_SYD_tab[DL_SYD_nr].oTyp = iSym_pt;
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_POINTS;
       break;
 
     case SYM_TRIA:
-      DLdyn[DLdyn_nr].oTyp = iSym_tria;
-      DLdyn[DLdyn_nr].lTyp = GL_LINE_STRIP;
+      DL_SYD_tab[DL_SYD_nr].oTyp = iSym_tria;
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_LINE_STRIP;
       break;
 
     case SYM_PLN:
-      DLdyn[DLdyn_nr].oTyp = iSym_pln;
-      DLdyn[DLdyn_nr].lTyp = GL_LINE_LOOP;
+      DL_SYD_tab[DL_SYD_nr].oTyp = iSym_pln;
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_LINE_LOOP;
       break;
 
     case SYM_STAR:
-      DLdyn[DLdyn_nr].oTyp = iSym_star;
-      DLdyn[DLdyn_nr].lTyp = GL_LINES;
+      DL_SYD_tab[DL_SYD_nr].oTyp = iSym_star;
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_LINES;
       break;
 
     case SYM_ARH2:
-      DLdyn[DLdyn_nr].oTyp = iSym_arh2;
-      DLdyn[DLdyn_nr].lTyp = GL_LINE_STRIP;
+      DL_SYD_tab[DL_SYD_nr].oTyp = iSym_arh2;
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_LINE_STRIP;
       break;
 
     case SYM_ARH3:
-      DLdyn[DLdyn_nr].oTyp = iSym_arh3;
-      DLdyn[DLdyn_nr].lTyp = GL_LINE_STRIP;
+      DL_SYD_tab[DL_SYD_nr].oTyp = iSym_arh3;
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_LINE_STRIP;
       break;
 
     case Typ_PVC:
-      DEB_dump_pvc (data, "DLdyn_add__");
-      irc = DLdyn_add_pvc (data, size, att);
+      DEB_dump_pvc (data, "DL_SYD_add__");
+      irc = DL_SYD_add_pvc (data, size, att);
       goto L_done;
 
 /* UNUSED: display curve
       UT3D_pt_traptvc (&pta[1], &pta[0], &((VecPos*)data)->vc);
       iOff = GL_shSY2_add_cv (pta, 2);  // add the points into SY-buffer
-      DLdyn[DLdyn_nr].oTyp = -Typ_CV;         // negative - no symbol
-      DLdyn[DLdyn_nr].lTyp = GL_LINE_STRIP;
-      DLdyn[DLdyn_nr].iOff  = iOff;           // data-pos in buffer
-      DLdyn[DLdyn_nr].iatt  = *(int*)att;     // store ColRGB | Att_ln | imagesize
-      DLdyn[DLdyn_nr].vtxNr = 2;              // nr vertexes
-      ++DLdyn_nr;
-      if(DLdyn_nr >= DLdyn_siz) goto L_err1;
+      DL_SYD_tab[DL_SYD_nr].oTyp = -Typ_CV;         // negative - no symbol
+      DL_SYD_tab[DL_SYD_nr].lTyp = GL_LINE_STRIP;
+      DL_SYD_tab[DL_SYD_nr].iOff  = iOff;           // data-pos in buffer
+      DL_SYD_tab[DL_SYD_nr].iatt  = *(int*)att;     // store ColRGB | Att_ln | imagesize
+      DL_SYD_tab[DL_SYD_nr].vtxNr = 2;              // nr vertexes
+      ++DL_SYD_nr;
+      if(DL_SYD_nr >= DL_SYD_siz) goto L_err1;
 */
 
     default:
-      TX_Error ("DLdyn_add__ typ = %d",Typ_PVC);
+      TX_Error ("DL_SYD_add__ typ = %d",Typ_PVC);
       return -1;
   }
 
 
-  DLdyn[DLdyn_nr].iatt  = *(int*)att;     // store ColRGB | Att_ln | imagesize
-  DLdyn[DLdyn_nr].pos   = *(Point*)data;      // store startpos
-  DLdyn[DLdyn_nr].size  = size;      // store size
+  DL_SYD_tab[DL_SYD_nr].iatt  = *(int*)att;     // store ColRGB | Att_ln | imagesize
+  DL_SYD_tab[DL_SYD_nr].pos   = *(Point*)data;      // store startpos
+  DL_SYD_tab[DL_SYD_nr].size  = size;      // store size
 
-  ++DLdyn_nr;
-  if(DLdyn_nr >= DLdyn_siz) irc = -1;
+  ++DL_SYD_nr;
+  if(DL_SYD_nr >= DL_SYD_siz) irc = -1;
 
 
   L_done:
@@ -150,9 +150,9 @@ List_functions_end:
 
 
 //================================================================
-  int DLdyn_add_pvc (void *data, float size, void *att) {
+  int DL_SYD_add_pvc (void *data, float size, void *att) {
 //================================================================
-// DLdyn_add_pvc               add 3D-vector from VecPos
+// DL_SYD_add_pvc               add 3D-vector from VecPos
 // INPUT:
 //   data         VecPos*
 //   size         0.f = true size (user-units);
@@ -163,7 +163,7 @@ List_functions_end:
   Point     pta[2];
   Vector    vc1;
 
-  printf("DLdyn_add_pvc size=%f\n",size);
+  printf("DL_SYD_add_pvc size=%f\n",size);
 
   // UT3D_pt_traptvc (&pta[1], &pta[0], &((VecPos*)data)->vc);
 
@@ -186,7 +186,7 @@ List_functions_end:
 
     UT3D_2angr_vc__ (&az, &ay, &vc1);
     // UT3D_angrZX_vc (&az, &ay, &((VecPos*)data)->vc);
-      printf(" DLdyn_add_pvc-az=%f %f ay=%f %f\n",
+      printf(" DL_SYD_add_pvc-az=%f %f ay=%f %f\n",
              az,UT_DEGREES(az),ay,UT_DEGREES(ay));
     az = UTP_angr_set_0_2pi (az);
     ay = UTP_angr_set_0_2pi (ay);
@@ -196,35 +196,35 @@ List_functions_end:
   iOff = GL_shSY2_add_cv (pta, 2);  // add the points into SY-buffer
 
 
-  DLdyn[DLdyn_nr].oTyp  = -Typ_PVC;         // negative - no symbol
-  DLdyn[DLdyn_nr].lTyp  = GL_LINE_STRIP;
-  DLdyn[DLdyn_nr].iOff  = iOff;             // data-pos in buffer
-  DLdyn[DLdyn_nr].vtxNr = 2;              // nr vertexes
-  DLdyn[DLdyn_nr].pos   = ((VecPos*)data)->pos;// startPos
-  DLdyn[DLdyn_nr].size  = size;
-  DLdyn[DLdyn_nr].az    = az;                  // store angle around Z
-  DLdyn[DLdyn_nr].ay    = ay;                  // store angle aroung new Y
-  DLdyn[DLdyn_nr].iatt  = *(int*)att;      // store ColRGB | Att_ln | imagesize
-  DLdyn[DLdyn_nr].vtxNr = 2;               // nr vertexes
+  DL_SYD_tab[DL_SYD_nr].oTyp  = -Typ_PVC;         // negative - no symbol
+  DL_SYD_tab[DL_SYD_nr].lTyp  = GL_LINE_STRIP;
+  DL_SYD_tab[DL_SYD_nr].iOff  = iOff;             // data-pos in buffer
+  DL_SYD_tab[DL_SYD_nr].vtxNr = 2;              // nr vertexes
+  DL_SYD_tab[DL_SYD_nr].pos   = ((VecPos*)data)->pos;// startPos
+  DL_SYD_tab[DL_SYD_nr].size  = size;
+  DL_SYD_tab[DL_SYD_nr].az    = az;                  // store angle around Z
+  DL_SYD_tab[DL_SYD_nr].ay    = ay;                  // store angle aroung new Y
+  DL_SYD_tab[DL_SYD_nr].iatt  = *(int*)att;      // store ColRGB | Att_ln | imagesize
+  DL_SYD_tab[DL_SYD_nr].vtxNr = 2;               // nr vertexes
 
-  ++DLdyn_nr;
-  if(DLdyn_nr >= DLdyn_siz) return -1;
+  ++DL_SYD_nr;
+  if(DL_SYD_nr >= DL_SYD_siz) return -1;
 
 
   // add the arrowhead
-  DLdyn[DLdyn_nr].oTyp  = -Typ_PVC;         // negative - no symbol
-  DLdyn[DLdyn_nr].lTyp  = GL_LINE_STRIP;
-  DLdyn[DLdyn_nr].iOff  = iOff;             // data-pos in buffer
-  DLdyn[DLdyn_nr].vtxNr = 2;              // nr vertexes
-  DLdyn[DLdyn_nr].pos   = pta[1];         // endPos true-length|length-1
-  DLdyn[DLdyn_nr].size  = size;
-  DLdyn[DLdyn_nr].az    = az;                  // store angle around Z
-  DLdyn[DLdyn_nr].ay    = ay;                  // store angle aroung new Y
-  DLdyn[DLdyn_nr].iatt  = *(int*)att;      // store ColRGB | Att_ln | imagesize
-  DLdyn[DLdyn_nr].vtxNr = 2;               // nr vertexes
+  DL_SYD_tab[DL_SYD_nr].oTyp  = -Typ_PVC;         // negative - no symbol
+  DL_SYD_tab[DL_SYD_nr].lTyp  = GL_LINE_STRIP;
+  DL_SYD_tab[DL_SYD_nr].iOff  = iOff;             // data-pos in buffer
+  DL_SYD_tab[DL_SYD_nr].vtxNr = 2;              // nr vertexes
+  DL_SYD_tab[DL_SYD_nr].pos   = pta[1];         // endPos true-length|length-1
+  DL_SYD_tab[DL_SYD_nr].size  = size;
+  DL_SYD_tab[DL_SYD_nr].az    = az;                  // store angle around Z
+  DL_SYD_tab[DL_SYD_nr].ay    = ay;                  // store angle aroung new Y
+  DL_SYD_tab[DL_SYD_nr].iatt  = *(int*)att;      // store ColRGB | Att_ln | imagesize
+  DL_SYD_tab[DL_SYD_nr].vtxNr = 2;               // nr vertexes
 
-  ++DLdyn_nr;
-  if(DLdyn_nr >= DLdyn_siz) return -1;
+  ++DL_SYD_nr;
+  if(DL_SYD_nr >= DL_SYD_siz) return -1;
 
 
 
@@ -232,7 +232,7 @@ List_functions_end:
 
   //----------------------------------------------------------------
 // TODO: // add symbol iSym_arh3 at pta[1] oriented with ((VecPos*)data)->vc);
-//       DLdyn_add_cv (pta, 2);
+//       DL_SYD_add_cv (pta, 2);
 
   return 0;
 
@@ -240,7 +240,7 @@ List_functions_end:
 
 
 //================================================================
-  int DLdyn_dump () {
+  int DL_SYD_dump () {
 //================================================================
 
   int    i1;
@@ -250,16 +250,16 @@ List_functions_end:
 
 
 
-  printf("DLdyn_dump :::::::::::::::::::::::: \n");
+  printf("DL_SYD_dump :::::::::::::::::::::::: \n");
 
-  for(i1=0; i1<DLdyn_nr; ++i1) {
+  for(i1=0; i1<DL_SYD_nr; ++i1) {
     // point,curve - iatt = Att_ln    see Att_dump
-    att = (Att_ln*)&DLdyn[i1].iatt;
+    att = (Att_ln*)&DL_SYD_tab[i1].iatt;
     sprintf(s1, "ATT %02x %02x %02x dash=%d thick=%d",
             att->cr, att->cg, att->cb, att->dash, att->thick);
 
     printf("%3d oTyp=%2d lTyp=%2d size=%f vtxNr=%d %s\n",i1,
-           DLdyn[i1].oTyp, DLdyn[i1].lTyp, DLdyn[i1].size, DLdyn[i1].vtxNr, s1);
+           DL_SYD_tab[i1].oTyp, DL_SYD_tab[i1].lTyp, DL_SYD_tab[i1].size, DL_SYD_tab[i1].vtxNr, s1);
   }
 
   return 0;

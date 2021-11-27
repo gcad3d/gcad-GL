@@ -21,4 +21,9 @@
 #endif
 
 
+#define FLT_32_MAX      9999999999999.999
+//                      1234567890123
+#define FLT_32_MIN1     0.000001
+
+
 // EOF

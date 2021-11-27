@@ -85,9 +85,6 @@ GUI_CB_key            // callback key pressed/released
 #include <math.h>
 
 
-#include "../ut/ut_types.h"                // UINT_32
-#include "../ut/types.h"                   // application-types
-
 #define extern  // does eliminate "extern" in includefile
 #include "../ut/geo.h"                     // Point Plane Mat_4x4D ..
 #undef extern
@@ -97,6 +94,8 @@ GUI_CB_key            // callback key pressed/released
 #include "../ut/ut.h"                      // TX_Print
 #include "../db/db.h"                      // DB_..
 #include "../dl/dl.h"                      // DL_nr
+#include "../dl/dl_sym_perm.h"             // DL_SYP_dump
+#include "../dl/dl_sym_dyn.h"              // DL_SYD_dump
 #include "../gl/glbt.h"                    // GLBT_..
 #include "../gr/col.h"
 #include "../ut/os.h"                      // OS_system
@@ -107,10 +106,6 @@ GUI_CB_key            // callback key pressed/released
 
 
 //----------------------------------------------------------------
-ColRGB actCol = _ColRGB_NUL;     // active defaultColor  (surfaces)
-Att_ln cvAtt  = _Att_ln_NUL;     // active defaultLineTyp
-Att_ln ptAtt  = _Att_ln_NUL;     // active defaultPointTyp
-
 
 double ptDat1[] = {   // startpos point
   -0.80,  0.50,  -0.5
@@ -160,6 +155,7 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
 //================================================================
   int AP_do (int typ) {
 //================================================================
+// retCode    0=redraw; 1=do-not-redraw
 
   int   i1, i2, i3;
 
@@ -220,6 +216,13 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
       GR_redraw ();
       break;
 
+    case Typ_Fnc6:
+      // Dump:
+      AP_do_dump ();
+      return 1; // do not redraw
+
+
+
     default:
       printf("***** AP_do error %d\n",typ);
 
@@ -232,30 +235,84 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
 }
 
 
+//================================================================
+  int AP_do_dump () {
+//================================================================
+  int   irc;
+  char  s1[80];
+
+  // get type of view from to set from user
+  irc = GUI_dlg_list1 (s1, sizeof(s1),
+                       "dumps.txt",
+                       "select func",
+                       "x30,y10");
+    printf(" view_get %d |%s|\n",irc,s1);
+
+
+
+  if(irc <= 0) return irc;
+
+  irc = -1;
+  if     (!strcmp(s1, "DL_SYP_dump"))   DL_SYP_dump ();
+  else if(!strcmp(s1, "DL_SYD_dump"))   DL_SYD_dump ();
+  else if(!strcmp(s1, "DL_dump"))       DL_dump ();
+  else if(!strcmp(s1, "GR_dump"))       GR_dump ();
+  else if(!strcmp(s1, "GLBT_dump"))     GLBT_dump ();
+  else TX_Error ("***** AP_do_dump ");
+
+
+  return 0;
+
+}
+
+
 //==============================================================================
-  int AP_obj_add_perm (int typ, double *data, int ptNr, void *iatt, int dbi) {
+  int AP_obj_add_perm (int typ, void *data, int oNr, void *iatt, int dbi) {
 //==============================================================================
 // AP_obj_add_perm           add obj permanent into DB, DL and display
+// INPUT:
+//   typ       type (of data) eg Typ_PT Typ_CV Typ_GL_Trias
+//   data      data=double[3 * nr-points]
+//   oNr       nr of points in data;
+//   iatt      graf.attribute; Att_ln for point,curve; ColRGB for surface
+//
+// Typ_PT point    oNr=nr-points data=double[]    // oNr points
+// Typ_CV polygon; oNr=ptNr      data=double[]    // oNr points for polygon
+// Typ_GL_Trias;   oNr=ptNr      data=double[]    // 3 pts per triangle
+
 
   int objId;
 
   // store obj in DB and get the (sequential) obj-ID
-  objId = DB_add__ (typ, data, ptNr, dbi);
+  objId = DB_add__ (typ, data, oNr, dbi);
 
   switch (typ) {
 
     case Typ_PT:
-// TODO ptNr > 1
+// TODO oNr > 1
       GR_perm_pt (data, *(Att_ln*)iatt, objId, dbi);
       break;
 
     case Typ_CV:
-      GR_perm_cv (data, ptNr, *(Att_ln*)iatt, objId, dbi);
+      GR_perm_cv (data, oNr, *(Att_ln*)iatt, objId, dbi);
       break;
 
     case Typ_GL_Trias:
-      GR_perm_sur (data, ptNr, typ, *(ColRGB*)iatt, objId, dbi);
+      GR_perm_sur (data, oNr, typ, *(ColRGB*)iatt, objId, dbi);
       break;
+
+    case Typ_GTXT:
+      GR_perm_GTxt (data, oNr, typ, iatt, objId, dbi);
+      break;
+
+//     case Typ_ATXT:
+//       GR_perm_ATxt (data, oNr, typ, *(Att_ln*)iatt, objId, dbi);
+//       break;
+
+    case Typ_Dimen:
+      GR_perm_Note (data, oNr, typ, iatt, objId, dbi);
+      break;
+
 
     default:
       TX_Error ("******* ERROR AP_obj_add_perm typ %d",typ);
@@ -421,6 +478,10 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
   GR_modsiz_set (5.0);
 
 
+
+  //----------------------------------------------------------------
+  // PERM-CURVES
+
   // ColRGB from 3 floats
   Col__3f (&actCol, col1);
 
@@ -428,7 +489,6 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
   Att__width (&cvAtt, lnWidth);
   Att__width (&ptAtt, ptWidth);
 
-  //----------------------------------------------------------------
   // create point
   AP_do (Typ_Fnc3);
 
@@ -439,15 +499,41 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
   // create polygon
   AP_do (Typ_Fnc4);
 
+
+  //----------------------------------------------------------------
+  // PERM-SURFACES
+
   // create a triangle; add it into DispList and GL
   AP_obj_add_perm  (Typ_GL_Trias, surDat1, 3, &actCol, DB_get_free(Typ_SUR));
 
   // create one more triangle, 
   AP_do (Typ_Fnc5);
 
+
+  //----------------------------------------------------------------
+  // PERM-SYMBOLS
+
+  // create dimension
+  UT3D_pt_3db (&pt1, -1., -1., 0.);
+  AP_test_Dimen (&pt1);
+  
+  // create 3D-text
+  UT3D_pt_3db (&pt1, -1., -1.5, 0.);
+  AP_test_GTxt (&pt1);
+
+
+
+  
+  //----------------------------------------------------------------
+  // DYM-SYMBOLS
+
+  // point
+  UT3D_pt_3db (&pt1, -1., -0.5, 0.);
+  AP_obj_add_dyn (SYM_PT, &pt1, 1, &cvAtt,  6.f);
+
   // create a dynamic small triangle; size 3 mm
+  pt1.x += 0.2;
   Att__width (&cvAtt, 2.f);
-  UT3D_pt_3db (&pt1, -0.8, -0.5, 0.);
   AP_obj_add_dyn (SYM_TRIA, &pt1, 1, &cvAtt, 3.f);
 
   // create a small star
@@ -460,20 +546,16 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
   AP_obj_add_dyn (SYM_PLN, &pt1, 1, &cvAtt, 3.f);
 
   // create pvc1 = dynamic 3D-vector at position pt1 true-length;
-  pt1.x += 0.2;
+  pt1.x += 0.75;
   pvc1.pos = pt1;
   AP_test_cv1 (&pvc1);
 
   // create pvc1 = dynamic 3D-vector at position pt1 normalized-length;
-  pt1.x += 0.5;
+  pt1.x += 0.75;
   pvc1.pos = pt1;
   AP_test_cv2 (&pvc1);
   
 
-
-
-  // UT3D_pt_traptvc (&pt2, &pt1, &pvc1.vc);
-  // AP_obj_add_perm (Typ_PT, &pt2, 1, &ptAtt, 0.f);
 
 
 
@@ -485,6 +567,7 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
   GLBT_but_add  (&iBt, Typ_Fnc3, "Point");
   GLBT_but_add  (&iBt, Typ_Fnc4, "Curve");
   GLBT_but_add  (&iBt, Typ_Fnc5, "Surface");
+  GLBT_but_add  (&iBt, Typ_Fnc6, "Dump");
 
 
   return 0;
@@ -550,7 +633,7 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
 //================================================================
   int AP_test_cv1 (VecPos *pvc1) {
 //================================================================
-// AP_test_cv1       test vector-at-position true-length; TODO-buggy
+// AP_test_cv1       test vector-at-position true-length;
   
   float scale = 0.f;
 
@@ -579,12 +662,16 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
 //================================================================
   int AP_test_cv2 (VecPos *pvc1) {
 //================================================================
-// AP_test_cv1       test vector-at-position normalized-length; TODO-buggy
+// AP_test_cv1       test vector-at-position normalized-length;
 
   float scale = 10.f;
 
   Att__width (&cvAtt, 1.f);
-  Att__3i (&cvAtt, 0, 200, 0);   // color black
+  Att__3i (&cvAtt, 0, 200, 0);   // color green
+
+
+  // AP_obj_add_perm (Typ_PT, &pvc1->pos, 1, &ptAtt, DB_get_free(Typ_PT));
+  // AP_obj_add_dyn (SYM_PT, &pvc1->pos, 1, &ptAtt, 10.f);
 
 
   // scale 0 = true length, else length in mm
@@ -599,6 +686,58 @@ int iBt = 0;      // nr of defined buttons on bottom of screen
 
   UT3D_vc_3db (&pvc1->vc, -0.25, -0.25, 0.15);
   AP_obj_add_dyn (Typ_PVC, pvc1, 1, &cvAtt,  scale);
+ 
+  return 0;
+
+}
+
+//================================================================
+  int AP_test_GTxt (Point *pt1) {
+//================================================================
+// AP_test_GTxt       test perm-3D-Text
+
+  static char  *sTxt = "Test 123.45";
+
+  GText tx1;
+
+
+  tx1.pt = *pt1;
+  tx1.size = 2.5f;
+  tx1.dir  = 0.f;
+  tx1.txt  = sTxt;
+
+  AP_obj_add_perm  (Typ_GTXT, &tx1, 1, NULL, DB_get_free(Typ_Note));
+
+  return 0;
+
+}
+
+
+
+//================================================================
+  int AP_test_Dimen (Point *pt1) {
+//================================================================
+// AP_test_Dimen       test dimensions
+
+
+  Dimen  dim1;
+
+
+  dim1.p1.x = pt1->x;
+  dim1.p1.y = pt1->y;
+
+  dim1.p2.x = pt1->x + 0.2;
+  dim1.p2.y = pt1->x - 0.1;
+
+  dim1.p3.x = pt1->x + 0.1;   // textPos
+  dim1.p3.y = pt1->x - 0.3;
+
+  dim1.dtyp = 0;   // linear
+  dim1.hd   = 12;  //  <-->
+  dim1.a1   = 0.;  // linear:textline;
+  dim1.a2   = 0.;  // UU
+
+  AP_obj_add_perm  (Typ_Dimen, &dim1, 1, NULL, DB_get_free(Typ_Note));
 
   return 0;
 

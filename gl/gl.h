@@ -22,19 +22,21 @@ extern Shader shCV;     // shader points, curves
 extern Shader shSY2;    // shader 2D-symbols
 
 extern Mat_4x4D GR_matd_scl;    // scale user-coords to device-coords
-extern Mat_4x4D GR_matd_mdl[4]; // model-matrix (pan, rotate); see INF_matrix
+extern Mat_4x4D GR_matd_mdl[8]; // model-matrix (pan, rotate); see INF_matrix
 extern Mat_4x4D GR_matd_view;   // view-matrix; GL_matd_scl * GR_matd_mdl
 extern Mat_4x4F GR_matf_dev;    // final matrix GR_matd_view as floats, column-order
 
 //----------------------------------------------------------------
 // PROTOTYPES:
 int GL_init ();
+int GL_InitInfo ();
 int GL_shad_create (int *shadID, char* shadSrc, int shadTyp);
 int GL_shad_make (int shader, int type);
 int GL_prog_make (int program);
 int GL_viewport ();
+void GL_view_ortho ();
+void GL_view_update ();
 int GL_scale_def ();
-int GL_view_update ();
 int GL_render__ ();
 int GL_buffer_f_add_d (int iOff, int oSiz, double *dData);
 

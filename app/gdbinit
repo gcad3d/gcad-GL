@@ -3,7 +3,8 @@
 #break GR_init0
 
 # ERROR BUFFER OVERFLOW  in DLdyn_add__
-break ../dl/dl_dyn.c:145
+#break ../dl/dl_dyn.c:145
+break AP_do_dump
 
 run
 

@@ -1,9 +1,9 @@
-app.c app.h deb.h
-../ut/deb_prt.c ../ut/dump.c ../ut/matrix.c ../ut/os_uix.c ../ut/ut2d.c ../ut/ut3d.c ../ut/ut_TX.c ../ut/utx.c ../ut/deb_prt.h ../ut/geo.h ../ut/matrix.h ../ut/os.h ../ut/tol.h ../ut/types.h ../ut/ut.h ../ut/ut_types.h ../ut/utx.h
-../db/db.c ../gr/col.h ../gr/gr.h
-../dl/dl.c ../dl/dl_dyn.c ../gr/col.h ../gr/gr.h
-../gr/col.c ../gr/gr.c ../gr/col.h ../gr/gr.h
+aped.c app.c aped.h app.h
+../ut/TX_cons.c ../ut/deb_prt.c ../ut/dump.c ../ut/matrix.c ../ut/os_uix.c ../ut/ut2d.c ../ut/ut3d.c ../ut/utx.c ../ut/TX_.h ../ut/deb.h ../ut/deb_prt.h ../ut/geo.h ../ut/matrix.h ../ut/mem.h ../ut/os.h ../ut/tol.h ../ut/types.h ../ut/ut.h ../ut/ut_types.h ../ut/utx.h
+../db/db.c ../gr/col.h ../gr/gr.h ../gr/gr_gtx.h
+../dl/dl.c ../dl/dl_dyn.c ../dl/dl_sym_dyn.c ../dl/dl_sym_perm.c ../gr/col.h ../gr/gr.h ../gr/gr_gtx.h
+../gr/col.c ../gr/gr.c ../gr/gr_gtx.c ../gr/col.h ../gr/gr.h ../gr/gr_gtx.h
 ../gui/gui.c ../gui/gui.h
 ../gui_gtk3/GUI_dlg1.c ../gui_gtk3/gtk3.c ../gui_gtk3/gtk.h
-../gl/gl.c ../gl/gl_font1.c ../gl/gl_shSY2.c ../gl/gl_shadCV.c ../gl/gl_shadSUn.c ../gl/glbt.c ../gl/gl.h ../gl/gl_font1.h ../gl/gl_shSY2.h ../gl/gl_shadCV.h ../gl/gl_shadSUn.h ../gl/glbt.h
+../gl/gl.c ../gl/gl_font1.c ../gl/gl_shCV.c ../gl/gl_shSY2.c ../gl/gl_shadCV.c ../gl/gl_shadSUn.c ../gl/glbt.c ../gl/gl.h ../gl/gl_font1.h ../gl/gl_shCV.h ../gl/gl_shSY2.h ../gl/gl_shadCV.h ../gl/gl_shadSUn.h ../gl/glbt.h
 ../inf/inf_gr.c ../inf/inf.h

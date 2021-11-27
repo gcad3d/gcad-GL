@@ -17,6 +17,7 @@ List_functions_start:
 
 M44D_init          Initialize a 4x4 - matrix  doubles
 M44D_transl__      copy translation into matrix 4x4-double-row-order
+M44D_transl_3      copy translation into matrix 4x4-double-row-order
 M44D_scale__       scaling around origin 4x4-double-row-order
 M44D_rot_X         rotate around X 4x4-double-row-order
 M44D_rot_Y         rotate around Y 4x4-double-row-order
@@ -42,16 +43,18 @@ List_functions_end:
 
 
 
-M44-row-order:
-   0        1       2       3
-   4        5       6       7
-   8        9      10      11
-  12       13      14      15
+//----------------------------------------------------------------
+M44D 4x4-double-row-order:                        // C-compiler-default-order
 
- [0][0]   [1][0]  [2][0]  [3][0]
- [0][1]   [1][1]  [2][1]  [3][1]
- [0][2]   [1][2]  [2][2]  [3][2]
- [0][3]   [1][3]  [2][3]  [3][3]
+ 0=[0][0]=vx.x   1=[0][1]=vy.x   2=[0][2]=vz.x   3=[0][3]=or.x
+ 4=[1][0]=vx.y   5=[1][1]=vy.y   6=[1][2]=vz.y   7=[1][3]=or.y
+ 8=[2][0]=vx.z   9=[2][1]=vy.z  10=[2][2]=vz.z  11=[2][3]=or.z
+12=[3][0]=0     13=[3][1]=0     14=[3][2]=0     15=[3][3]=1
+
+
+
+//----------------------------------------------------------------
+M44FC 4x4-float-column-order                  // used by opengl
 
  0=[0][0]=vx.x   1=[0][1]=vx.y   2=[0][2]=vx.z   3=[0][3]=0
  4=[1][0]=vy.x   5=[1][1]=vy.y   6=[1][2]=vy.z   7=[1][3]=0
@@ -59,6 +62,11 @@ M44-row-order:
 12=[3][0]=or.x  13=[3][1]=or.y  14=[3][2]=or.z  15=[3][3]=1
 
 
+
+
+
+
+//----------------------------------------------------------------
 */
 
 
@@ -110,10 +118,10 @@ M44-row-order:
 //================================================================
 // M44D_transl__       copy translation into matrix 4x4-double-row-order
 //
+//  - - - x
+//  - - - y
+//  - - - z
 //  - - - -
-//  - - - -
-//  - - - -
-//  x y z -
 
   M44D_init (dMat);
 
@@ -125,14 +133,33 @@ M44-row-order:
 
 
 //================================================================
-  void M44DC_transl__ (Mat_4x4D dMat, Point *ptOri) {
+  void M44D_transl_3 (Mat_4x4D dMat, double dx, double dy, double dz) {
 //================================================================
-// M44D_transl__       copy translation into matrix 4x4-double-column-order
+// M44D_transl_3       copy translation into matrix 4x4-double-row-order
 //
 //  - - - x
 //  - - - y
 //  - - - z
 //  - - - -
+
+  M44D_init (dMat);
+
+  dMat[0][3] = dx;
+  dMat[1][3] = dy;
+  dMat[2][3] = dz;
+
+}
+
+
+//================================================================
+  void M44DC_transl__ (Mat_4x4D dMat, Point *ptOri) {
+//================================================================
+// M44D_transl__       copy translation into matrix 4x4-double-column-order
+//
+//  - - - -
+//  - - - -
+//  - - - -
+//  x y z -
   
   M44D_init (dMat);
 
@@ -191,10 +218,10 @@ void M44FC_transl__ (float *ma, float px, float py, float pz) {
 //=======================================================================
 //   M44D_scale__                     scaling around origin 4x4-double-row-order
 //
-//  x - - -              x = 2/(r-l)                  l=0, r=800
-//  - y - -              y = 2/(t-b)                  t=0, b=800
-//  - - z -              z = -2/(f-n)                 n=0, f=1000
-//  a b c -              a = -(r+l)/(r-l)
+//  x - - a              x = 2/(r-l)                  l=0, r=800
+//  - y - b              y = 2/(t-b)                  t=0, b=800
+//  - - z c              z = -2/(f-n)                 n=0, f=1000
+//  - - - -              a = -(r+l)/(r-l)
 //                       b = -(t+b)/(t-b)
 //                       c = -(f+n)/(f-n)            
 
@@ -279,12 +306,6 @@ void M44FC_transl__ (float *ma, float px, float py, float pz) {
   dMat[2][0] = -dMat[0][2];
   dMat[2][2] = dMat[0][0];
 
-  // dMat[0][0] = cos(angr);
-  // dMat[2][0] = sin(angr);
-// 
-  // dMat[0][2] = -dMat[2][0];
-  // dMat[2][2] = dMat[0][0];
-
 } 
 
 
@@ -305,12 +326,6 @@ void M44FC_transl__ (float *ma, float px, float py, float pz) {
 
   dMat[1][0] = -dMat[0][1];
   dMat[1][1] = dMat[0][0];
-// 
-  // dMat[0][0] = cos(angr);
-  // dMat[0][1] = sin(angr);
-// 
-  // dMat[1][0] = -dMat[0][1];
-  // dMat[1][1] = dMat[0][0];
 
 }
 
