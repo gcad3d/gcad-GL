@@ -47,7 +47,8 @@ always normal to eyevector, rotated
   - can be modified for individual objects,  
   	next redraw updates this objects
 
-
+~~~
+~~~
 #### Modules of gcad-GL:
 ~~~
   GUI    user interface independent from drivers (Gtk, OpenGL)
@@ -60,7 +61,8 @@ always normal to eyevector, rotated
   DL     DisplayList (control of grafical attributes)
 ~~~
 
-
+~~~
+~~~
 #### SHADERS:
 - shadSUn  vertices  
            triangles (triangles, triangle-loops, triangle-fans)
@@ -83,7 +85,8 @@ always normal to eyevector, rotated
 - shadSY3  vertices (3D WCS)  
            3D-symbols (text, plane, axis, arrow[head], ..)
 
-
+~~~
+~~~
 #### EXAMPLE:
 ~~~
 	int GUI_CB_win_is_up () {
@@ -107,7 +110,8 @@ always normal to eyevector, rotated
 ~~~
 Full code see app.c
 
-
+~~~
+~~~
 #### Build:
 Prerequisites:  
 gcc with tools (ctags)  
@@ -125,7 +129,8 @@ sudo yum install gtk3-devel mesa-libGL-devel
 make && ./a.out  
 For using see Help-file using.txt and console-output  
 
-
+~~~
+~~~
 #### TODO: (not yet implemented, help wanted)
 - shaded_faces - geometry-shader ?  
     get angle normal-eyeVector = shading-factor
@@ -136,18 +141,43 @@ For using see Help-file using.txt and console-output
 - perspectivic projection
 - make shared overlay (libgcad-GL-gtk3-gl3.so)
 
+~~~
+~~~
 #### Already working:
 - orthographic projection with zoom, pan, rotate
 - create points, curves, triangles, vectors, 2D-buttons
 - change colors, width of curves, points
 - hide / redisplay objects
 
+~~~
+~~~
+#### Opengl-legacy-testprograms
+In directory tests_gl_legacy are several minimum-code-programs for  
+checking legacy-Opengl with Gtk.  
+nvidia-driver-495 with Gtk2 works OK;  
+nvidia-driver-495 with Gtk3 cannot get the Z-buffer (only 2D works).  
+Gtk3 with openglarea does not support legacy-Opengl.  
+Compile / Link programs with eg -  
+make -f gtk3_glx.mak  
+Run programs with eg  -  
+./gtk3_glx  
+  
+|              |                  |                           |
+|--------------|------------------|---------------------------|
+|glx_only      |GLX  -            |OK|
+|gtk2_glx      |Gtk2 GLX          |OK (also OK with driver nvidia-driver-495)|
+|gtk3_glx      |Gtk3 GLX          |only 2D (no Z-buffer) with nvidia-driver-495|
+|              |                  |OK with driver readeon|
+|              |                  |OK with driver nouveau (NV137)|
+|gtk3_gla      |Gtk3 openglarea   |does not provide Legacy-OpenGL-window|
 
+~~~
+~~~
 #### History:
-2021-11-26  V-0.04 vectors - true-length, normalized
-2021-10-11  dynamic-symbols, directory-structure, cursors, blocking ..
-2021-09-10  First release.
-
+2012-12-23  V-0.05 legacy-Opengl-testprogs added  
+2021-11-26  V-0.04 vectors - true-length, normalized  
+2021-10-11  dynamic-symbols, directory-structure, cursors, blocking ..  
+2021-09-10  First release.  
 
 ~~~
 Report bugs, improvements to support at gcad3d.org
