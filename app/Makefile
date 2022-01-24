@@ -8,7 +8,7 @@ EXENAM = a.out
 
 CLEAN = $(shell /bin/rm -rf t1.o)
 
-SRC1 = $(shell find . -type f -name "*.c")
+SRC1 =  $(shell find ../app -type f -name "*.c")
 SRC1 += $(shell find ../ut -type f -name "*.c")
 SRC1 += $(shell find ../db -type f -name "*.c")
 SRC1 += $(shell find ../dl -type f -name "*.c")
@@ -16,13 +16,14 @@ SRC1 += $(shell find ../gr -type f -name "*.c")
 SRC1 += $(shell find ../gui -type f -name "*.c")
 SRC1 += $(shell find ../gui_gtk3 -type f -name "*.c")
 SRC1 += $(shell find ../gl -type f -name "*.c")
+SRC1 += $(shell find ../inf -type f -name "*.c")
 
 OBJ0 = $(patsubst %.c,%.o, $(notdir $(SRC1)))
 
 # remove GUI_dlg1.o
 OBJ1   = $(patsubst GUI_dlg1.o,,$(OBJ0))
 
-VPATH = $(gcad_dir_bin):../ut/:../db/:../dl/:../gr/:../gui/:../gui_$(VGUI)/:../gl/:.
+VPATH = $(gcad_dir_bin):../ut/:../db/:../dl/:../gr/:../gui/:../gui_$(VGUI)/:../gl/:../inf:.
 
 
 CFLAGS  += -std=c99 -DGL_GLEXT_PROTOTYPES
@@ -51,6 +52,7 @@ srclst:
 
 %.o: %.c
 	@echo ================= compile $^ $@
+	@echo "OBJ1=" $(OBJ1) "==================="
 	$(CC) $(CFLAGS) $(CPDEB) -o $@ -c $^
 	mv -f $(@F) $(gcad_dir_bin).
 	ctags -f ../tags/$(*F).tag -IMemTab --c-kinds=dfstvx --tag-relative=yes --excmd=pattern $<
